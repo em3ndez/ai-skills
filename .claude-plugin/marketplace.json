@@ -4,7 +4,7 @@
     "name": "Sanjay"
   },
   "metadata": {
-    "description": "Read-only PostgreSQL query skill for Claude Code",
+    "description": "Read-only PostgreSQL query skill",
     "version": "1.0.0",
     "pluginRoot": "./skills"
   },
@@ -19,7 +19,7 @@
       },
       "homepage": "https://github.com/sanjay3290/postgres-skill",
       "repository": "https://github.com/sanjay3290/postgres-skill",
-      "license": "MIT",
+      "license": "Apache-2.0",
       "keywords": ["postgres", "postgresql", "database", "sql", "query", "read-only"],
       "category": "database",
       "tags": ["database", "postgres", "sql", "data-analysis"]
