@@ -1,10 +1,10 @@
 {
-  "name": "postgres-skill",
+  "name": "agent-skills",
   "owner": {
     "name": "Sanjay"
   },
   "metadata": {
-    "description": "Read-only PostgreSQL query skill",
+    "description": "Collection of agent skills for AI coding assistants",
     "version": "1.0.0",
     "pluginRoot": "./skills"
   },
@@ -17,8 +17,8 @@
       "author": {
         "name": "Sanjay"
       },
-      "homepage": "https://github.com/sanjay3290/postgres-skill",
-      "repository": "https://github.com/sanjay3290/postgres-skill",
+      "homepage": "https://github.com/sanjay3290/agent-skills",
+      "repository": "https://github.com/sanjay3290/agent-skills",
       "license": "Apache-2.0",
       "keywords": ["postgres", "postgresql", "database", "sql", "query", "read-only"],
       "category": "database",
