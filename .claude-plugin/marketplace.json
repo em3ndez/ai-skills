@@ -1,0 +1,28 @@
+{
+  "name": "postgres-skill",
+  "owner": {
+    "name": "Sanjay"
+  },
+  "metadata": {
+    "description": "Read-only PostgreSQL query skill for Claude Code",
+    "version": "1.0.0",
+    "pluginRoot": "./skills"
+  },
+  "plugins": [
+    {
+      "name": "postgres",
+      "source": "./skills/postgres",
+      "description": "Execute read-only SQL queries against multiple PostgreSQL databases. Supports intelligent database selection based on descriptions, blocks all write operations for safety.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Sanjay"
+      },
+      "homepage": "https://github.com/sanjay3290/postgres-skill",
+      "repository": "https://github.com/sanjay3290/postgres-skill",
+      "license": "MIT",
+      "keywords": ["postgres", "postgresql", "database", "sql", "query", "read-only"],
+      "category": "database",
+      "tags": ["database", "postgres", "sql", "data-analysis"]
+    }
+  ]
+}
