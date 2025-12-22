@@ -5,8 +5,7 @@
   },
   "metadata": {
     "description": "Collection of agent skills for AI coding assistants",
-    "version": "1.0.0",
-    "pluginRoot": "./skills"
+    "version": "1.0.0"
   },
   "plugins": [
     {
