@@ -1,14 +1,5 @@
 {
   "name": "imagen",
   "version": "1.0.0",
-  "description": "Generate images using Google Gemini's AI image generation model. Supports multiple sizes and cross-platform usage (Windows, macOS, Linux).",
-  "author": {
-    "name": "Sanjay"
-  },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/sanjay3290/ai-skills",
-  "repository": "https://github.com/sanjay3290/ai-skills",
-  "keywords": ["image", "gemini", "ai", "generation", "art", "creative"],
-  "category": "media",
-  "tags": ["image-generation", "ai", "gemini", "creative", "cross-platform"]
+  "description": "Generate images using Google Gemini's AI image generation model. Supports multiple sizes and cross-platform usage (Windows, macOS, Linux)."
 }
