@@ -1,5 +1,5 @@
 {
-  "name": "agent-skills",
+  "name": "ai-skills",
   "owner": {
     "name": "Sanjay"
   },
@@ -16,12 +16,27 @@
       "author": {
         "name": "Sanjay"
       },
-      "homepage": "https://github.com/sanjay3290/agent-skills",
-      "repository": "https://github.com/sanjay3290/agent-skills",
+      "homepage": "https://github.com/sanjay3290/ai-skills",
+      "repository": "https://github.com/sanjay3290/ai-skills",
       "license": "Apache-2.0",
       "keywords": ["postgres", "postgresql", "database", "sql", "query", "read-only"],
       "category": "database",
       "tags": ["database", "postgres", "sql", "data-analysis"]
+    },
+    {
+      "name": "imagen",
+      "source": "./skills/imagen",
+      "description": "Generate images using Google Gemini's AI image generation model. Cross-platform support for Windows, macOS, and Linux. Create UI mockups, icons, illustrations, diagrams, and more.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Sanjay"
+      },
+      "homepage": "https://github.com/sanjay3290/ai-skills",
+      "repository": "https://github.com/sanjay3290/ai-skills",
+      "license": "Apache-2.0",
+      "keywords": ["image", "gemini", "ai", "generation", "art", "creative", "cross-platform"],
+      "category": "media",
+      "tags": ["image-generation", "ai", "gemini", "creative", "cross-platform"]
     }
   ]
 }
