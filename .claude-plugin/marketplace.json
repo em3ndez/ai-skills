@@ -10,33 +10,35 @@
   "plugins": [
     {
       "name": "postgres",
-      "source": "./skills/postgres",
       "description": "Execute read-only SQL queries against multiple PostgreSQL databases. Supports intelligent database selection based on descriptions, blocks all write operations for safety.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Sanjay"
-      },
-      "homepage": "https://github.com/sanjay3290/ai-skills",
-      "repository": "https://github.com/sanjay3290/ai-skills",
-      "license": "Apache-2.0",
-      "keywords": ["postgres", "postgresql", "database", "sql", "query", "read-only"],
-      "category": "database",
-      "tags": ["database", "postgres", "sql", "data-analysis"]
+      "source": "./",
+      "skills": [
+        "./skills/postgres"
+      ]
     },
     {
       "name": "imagen",
-      "source": "./skills/imagen",
       "description": "Generate images using Google Gemini's AI image generation model. Cross-platform support for Windows, macOS, and Linux. Create UI mockups, icons, illustrations, diagrams, and more.",
-      "version": "1.0.0",
-      "author": {
-        "name": "Sanjay"
-      },
-      "homepage": "https://github.com/sanjay3290/ai-skills",
-      "repository": "https://github.com/sanjay3290/ai-skills",
-      "license": "Apache-2.0",
-      "keywords": ["image", "gemini", "ai", "generation", "art", "creative", "cross-platform"],
-      "category": "media",
-      "tags": ["image-generation", "ai", "gemini", "creative", "cross-platform"]
+      "source": "./",
+      "skills": [
+        "./skills/imagen"
+      ]
+    },
+    {
+      "name": "deep-research",
+      "description": "Perform autonomous multi-step research using Gemini Deep Research Agent. Literature reviews, competitive analysis, market research with citations.",
+      "source": "./",
+      "skills": [
+        "./skills/deep-research"
+      ]
+    },
+    {
+      "name": "outline",
+      "description": "Search, read, and manage Outline wiki documents. Full CRUD operations for any Outline wiki instance (cloud or self-hosted).",
+      "source": "./",
+      "skills": [
+        "./skills/outline"
+      ]
     }
   ]
 }
