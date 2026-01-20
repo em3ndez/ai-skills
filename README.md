@@ -200,3 +200,20 @@ description: "When to use this skill"
 ## License
 
 Apache-2.0
+
+<!--
+## Awesome Lists (for PR submissions when adding new skills)
+
+| Repository | Fork | Notes |
+|------------|------|-------|
+| github.com/BehiSecc/awesome-claude-skills | sanjay3290/awesome-claude-skills-1 | Active, PRs merge quickly |
+| github.com/travisvn/awesome-claude-skills | sanjay3290/awesome-claude-skills-3 | Uses table format for Individual Skills |
+| github.com/Prat011/awesome-llm-skills | sanjay3290/awesome-llm-skills | Multi-LLM focus (Claude, Codex, Gemini, etc.) |
+| github.com/ComposioHQ/awesome-claude-skills | sanjay3290/awesome-claude-skills | Composio-maintained, has connect-apps plugin |
+
+Skill placement by category:
+- postgres: Data & Analysis
+- imagen: Creative & Media
+- deep-research: Data & Analysis / Scientific & Research
+- outline: Collaboration & Project Management
+-->
