@@ -9,7 +9,9 @@ An AI agent skill for reading Google Sheets spreadsheets - get content, fetch sp
 - **Search** - Find spreadsheets by name
 - **Metadata** - View sheet names, dimensions, and properties
 
-Read-only access. Lightweight alternative to the full Google Workspace MCP server.
+Read-only access. Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 

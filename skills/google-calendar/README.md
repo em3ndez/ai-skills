@@ -11,7 +11,9 @@ An AI agent skill for interacting with Google Calendar - list events, create/upd
 - **Find Free Time** - Discover available slots across attendees
 - **Respond to Invitations** - Accept, decline, or mark tentative
 
-Lightweight alternative to the full Google Workspace MCP server.
+Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 

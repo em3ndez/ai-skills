@@ -11,6 +11,8 @@ description: |
 
 Lightweight Google Sheets integration with standalone OAuth authentication. No MCP server required. Read-only access.
 
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
+
 ## First-Time Setup
 
 Authenticate with Google (opens browser):

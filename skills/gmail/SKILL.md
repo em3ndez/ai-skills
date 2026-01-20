@@ -11,6 +11,8 @@ description: |
 
 Lightweight Gmail integration with standalone OAuth authentication. No MCP server required.
 
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
+
 ## First-Time Setup
 
 Authenticate with Google (opens browser):

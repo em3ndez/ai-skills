@@ -9,7 +9,9 @@ An AI agent skill for interacting with Google Drive - search files, find folders
 - **List Contents** - Browse folder contents
 - **Download** - Download files locally
 
-Read-only access. Lightweight alternative to the full Google Workspace MCP server.
+Read-only access. Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 

@@ -11,7 +11,9 @@ An AI agent skill for interacting with Google Chat - list spaces, send messages,
 - **Read Messages** - Get conversation history from spaces
 - **Create Spaces** - Set up new spaces with members
 
-Lightweight alternative to the full Google Workspace MCP server.
+Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 

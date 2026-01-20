@@ -9,7 +9,9 @@ An AI agent skill for interacting with Google Docs - create documents, search by
 - **Read Content** - Extract text from documents
 - **Edit** - Append, insert, or replace text
 
-Lightweight alternative to the full Google Workspace MCP server.
+Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 

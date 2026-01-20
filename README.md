@@ -33,7 +33,9 @@ A collection of portable skills for AI coding assistants. Works with all major A
 
 ### Google Workspace Skills
 
-Lightweight alternatives to the full Google Workspace MCP server. Each skill has standalone OAuth authentication with cross-platform support (macOS Keychain, Windows/Linux encrypted file storage).
+Lightweight alternatives to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace). Each skill has standalone OAuth authentication with cross-platform token storage via keyring.
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported. These skills use the same OAuth infrastructure as the official Google Workspace MCP.
 
 | Skill | Description |
 |-------|-------------|
@@ -238,6 +240,10 @@ description: "When to use this skill"
 3. Include `SKILL.md` with proper frontmatter
 4. Add documentation in `README.md`
 5. Submit a pull request
+
+## Credits
+
+- **Google Workspace Skills** - Based on the official [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace) by the Gemini CLI team. Uses their OAuth cloud function for authentication.
 
 ## License
 

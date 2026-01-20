@@ -10,7 +10,9 @@ An AI agent skill for interacting with Gmail - search emails, read messages, sen
 - **Drafts** - Create and send draft emails
 - **Labels** - Archive, star, mark read/unread
 
-Lightweight alternative to the full Google Workspace MCP server.
+Lightweight alternative to the full [Google Workspace MCP server](https://github.com/gemini-cli-extensions/workspace).
+
+> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## Quick Start
 
