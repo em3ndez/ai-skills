@@ -31,6 +31,20 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [deep-research](skills/deep-research/) | Autonomous multi-step research using Gemini Deep Research Agent |
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
 
+### Google Workspace Skills
+
+Lightweight alternatives to the full Google Workspace MCP server. Each skill has standalone OAuth authentication with cross-platform support (macOS Keychain, Windows/Linux encrypted file storage).
+
+| Skill | Description |
+|-------|-------------|
+| [google-chat](skills/google-chat/) | List spaces, send messages, DMs, create spaces |
+| [google-docs](skills/google-docs/) | Create, read, edit Google Docs |
+| [google-sheets](skills/google-sheets/) | Read spreadsheets, get ranges, find sheets |
+| [google-slides](skills/google-slides/) | Read presentations, get text and metadata |
+| [google-drive](skills/google-drive/) | Search files, list folders, download files |
+| [google-calendar](skills/google-calendar/) | Events, scheduling, free time lookup |
+| [gmail](skills/gmail/) | Search, read, send emails, manage labels |
+
 ## Installation
 
 ### Option 1: Clone entire repository
@@ -140,6 +154,26 @@ export OUTLINE_API_URL=https://your-wiki.example.com/api  # Optional
 ```
 Get your API key from your Outline wiki settings.
 
+### Google Workspace Skills
+Each Google Workspace skill requires the `keyring` library and first-time authentication:
+```bash
+# Install dependency (one-time)
+pip install keyring
+
+# Authenticate for the skill you need (opens browser)
+python ~/.claude/skills/ai-skills/skills/google-chat/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/google-docs/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/google-sheets/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/google-slides/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/google-drive/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/google-calendar/scripts/auth.py login
+python ~/.claude/skills/ai-skills/skills/gmail/scripts/auth.py login
+```
+Tokens stored securely via system keyring:
+- **macOS**: Keychain
+- **Windows**: Windows Credential Locker
+- **Linux**: Secret Service API (GNOME Keyring, KDE Wallet, etc.)
+
 ## Usage
 
 Once installed, skills activate automatically based on your requests. Just ask naturally:
@@ -163,6 +197,14 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Search the wiki for deployment guide"
 - "Read the onboarding documentation"
 - "Create a new wiki page for the API spec"
+
+### Google Workspace
+- "List my Google Chat spaces" / "Send a message to Project Alpha"
+- "Create a new Google Doc about the project proposal"
+- "Get the content of my Q4 Budget spreadsheet"
+- "What's on my calendar tomorrow?"
+- "Search my Gmail for invoices from last month"
+- "Find files named 'report' in my Drive"
 
 ## Skill Structure
 
@@ -216,4 +258,6 @@ Skill placement by category:
 - imagen: Creative & Media
 - deep-research: Data & Analysis / Scientific & Research
 - outline: Collaboration & Project Management
+- google-*: Collaboration & Project Management (all Google Workspace skills)
+- gmail: Collaboration & Project Management
 -->
