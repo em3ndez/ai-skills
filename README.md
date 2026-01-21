@@ -1,5 +1,7 @@
 # AI Agent Skills
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sanjay3290/ai-skills)
+
 A collection of portable skills for AI coding assistants. Works with all major AI clients that support the [Agent Skills Standard](https://agentskills.io).
 
 ## Supported AI Clients
