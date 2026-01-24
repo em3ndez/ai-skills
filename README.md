@@ -32,6 +32,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [imagen](skills/imagen/) | AI image generation using Google Gemini (cross-platform) |
 | [deep-research](skills/deep-research/) | Autonomous multi-step research using Gemini Deep Research Agent |
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
+| [jules](skills/jules/) | Delegate coding tasks to Google Jules AI agent (async bug fixes, docs, tests, features) |
 
 ### Google Workspace Skills
 
@@ -158,6 +159,16 @@ export OUTLINE_API_URL=https://your-wiki.example.com/api  # Optional
 ```
 Get your API key from your Outline wiki settings.
 
+### Jules
+```bash
+# Install CLI (one-time)
+npm install -g @google/jules
+
+# Authenticate (opens browser)
+jules login
+```
+Connect your GitHub repos at [jules.google.com](https://jules.google.com). Jules works asynchronously - create a task, it runs in the background, then pull results when complete.
+
 ### Google Workspace Skills
 Each Google Workspace skill requires the `keyring` library and first-time authentication:
 ```bash
@@ -201,6 +212,12 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Search the wiki for deployment guide"
 - "Read the onboarding documentation"
 - "Create a new wiki page for the API spec"
+
+### Jules
+- "Have Jules fix the authentication bug in src/auth.js"
+- "Delegate adding unit tests to Jules"
+- "Ask Jules to add documentation to the API module"
+- "Check my Jules sessions" / "Pull the results from Jules"
 
 ### Google Workspace
 - "List my Google Chat spaces" / "Send a message to Project Alpha"
@@ -266,6 +283,7 @@ Skill placement by category:
 - imagen: Creative & Media
 - deep-research: Data & Analysis / Scientific & Research
 - outline: Collaboration & Project Management
+- jules: Development & Automation
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
 -->

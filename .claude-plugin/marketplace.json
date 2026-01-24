@@ -39,6 +39,14 @@
       "skills": [
         "./skills/outline"
       ]
+    },
+    {
+      "name": "jules",
+      "description": "Delegate coding tasks to Google Jules AI agent. Asynchronously fix bugs, add documentation, implement features, write tests. Works with GitHub repos. Requires: npm install -g @google/jules",
+      "source": "./",
+      "skills": [
+        "./skills/jules"
+      ]
     }
   ]
 }
