@@ -103,16 +103,77 @@ def make_api_request(api_key: str, model_id: str, request_body: bytes) -> dict:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8") if e.fp else ""
-        print(f"Error: API request failed with HTTP status {e.code}", file=sys.stderr)
+        error_detail = ""
+
+        # Try to extract error message from response
         if error_body:
             try:
                 error_json = json.loads(error_body)
-                print(f"Response: {json.dumps(error_json, indent=2)}", file=sys.stderr)
+                error_detail = error_json.get("error", {}).get("message", "")
             except json.JSONDecodeError:
+                error_detail = error_body
+
+        # Provide user-friendly messages for common errors
+        if e.code == 429:
+            print("=" * 60, file=sys.stderr)
+            print("ERROR: Gemini API quota exhausted", file=sys.stderr)
+            print("=" * 60, file=sys.stderr)
+            print("\nYou've exceeded your Gemini API usage limits.", file=sys.stderr)
+            print("\nWhat to do:", file=sys.stderr)
+            print("  1. Wait for your quota to reset (usually resets daily)", file=sys.stderr)
+            print("  2. Check your usage at: https://aistudio.google.com/", file=sys.stderr)
+            print("  3. Consider upgrading your API plan if needed", file=sys.stderr)
+            if error_detail:
+                print(f"\nAPI message: {error_detail}", file=sys.stderr)
+        elif e.code == 403:
+            print("=" * 60, file=sys.stderr)
+            print("ERROR: Gemini API access denied", file=sys.stderr)
+            print("=" * 60, file=sys.stderr)
+            print("\nYour API key is invalid or lacks required permissions.", file=sys.stderr)
+            print("\nWhat to do:", file=sys.stderr)
+            print("  1. Verify your API key at: https://aistudio.google.com/", file=sys.stderr)
+            print("  2. Ensure the Gemini API is enabled for your project", file=sys.stderr)
+            print("  3. Check that your key has image generation permissions", file=sys.stderr)
+            if error_detail:
+                print(f"\nAPI message: {error_detail}", file=sys.stderr)
+        elif e.code == 400:
+            print("=" * 60, file=sys.stderr)
+            print("ERROR: Invalid request to Gemini API", file=sys.stderr)
+            print("=" * 60, file=sys.stderr)
+            print("\nThe request was rejected by the API.", file=sys.stderr)
+            print("\nPossible causes:", file=sys.stderr)
+            print("  - Prompt may contain blocked content", file=sys.stderr)
+            print("  - Prompt format may be invalid", file=sys.stderr)
+            print("  - Image generation may not be available for this prompt", file=sys.stderr)
+            if error_detail:
+                print(f"\nAPI message: {error_detail}", file=sys.stderr)
+        elif e.code >= 500:
+            print("=" * 60, file=sys.stderr)
+            print("ERROR: Gemini API server error", file=sys.stderr)
+            print("=" * 60, file=sys.stderr)
+            print(f"\nThe Gemini API returned a server error (HTTP {e.code}).", file=sys.stderr)
+            print("\nWhat to do:", file=sys.stderr)
+            print("  1. Wait a few minutes and try again", file=sys.stderr)
+            print("  2. Check Gemini API status if the issue persists", file=sys.stderr)
+            if error_detail:
+                print(f"\nAPI message: {error_detail}", file=sys.stderr)
+        else:
+            print(f"Error: API request failed with HTTP status {e.code}", file=sys.stderr)
+            if error_detail:
+                print(f"API message: {error_detail}", file=sys.stderr)
+            elif error_body:
                 print(f"Response: {error_body}", file=sys.stderr)
+
         sys.exit(1)
     except urllib.error.URLError as e:
-        print(f"Error: Failed to connect to API: {e.reason}", file=sys.stderr)
+        print("=" * 60, file=sys.stderr)
+        print("ERROR: Failed to connect to Gemini API", file=sys.stderr)
+        print("=" * 60, file=sys.stderr)
+        print(f"\nConnection error: {e.reason}", file=sys.stderr)
+        print("\nWhat to do:", file=sys.stderr)
+        print("  1. Check your internet connection", file=sys.stderr)
+        print("  2. Verify the API endpoint is accessible", file=sys.stderr)
+        print("  3. Check if a firewall or proxy is blocking the request", file=sys.stderr)
         sys.exit(1)
 
 
