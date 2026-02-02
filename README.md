@@ -33,6 +33,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [deep-research](skills/deep-research/) | Autonomous multi-step research using Gemini Deep Research Agent |
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
 | [jules](skills/jules/) | Delegate coding tasks to Google Jules AI agent (async bug fixes, docs, tests, features) |
+| [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
 
 ### Google Workspace Skills
 
@@ -169,6 +170,12 @@ jules login
 ```
 Connect your GitHub repos at [jules.google.com](https://jules.google.com). Jules works asynchronously - create a task, it runs in the background, then pull results when complete.
 
+### Manus
+```bash
+export MANUS_API_KEY=your-api-key
+```
+Get your API key from [manus.im](https://manus.im) settings. Manus excels at deep research, market analysis, product comparisons, and generating comprehensive reports with visualizations.
+
 ### Google Workspace Skills
 Each Google Workspace skill requires the `keyring` library and first-time authentication:
 ```bash
@@ -218,6 +225,12 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Delegate adding unit tests to Jules"
 - "Ask Jules to add documentation to the API module"
 - "Check my Jules sessions" / "Pull the results from Jules"
+
+### Manus
+- "Use Manus to research the best 4K monitors for Mac"
+- "Have Manus analyze AAPL stock with technical indicators"
+- "Delegate market research on EV charging to Manus"
+- "Ask Manus to compare AWS vs GCP vs Azure pricing"
 
 ### Google Workspace
 - "List my Google Chat spaces" / "Send a message to Project Alpha"
@@ -284,6 +297,7 @@ Skill placement by category:
 - deep-research: Data & Analysis / Scientific & Research
 - outline: Collaboration & Project Management
 - jules: Development & Automation
+- manus: Data & Analysis / Scientific & Research (deep research, market analysis)
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
 -->
