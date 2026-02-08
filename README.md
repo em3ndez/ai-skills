@@ -34,6 +34,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
 | [jules](skills/jules/) | Delegate coding tasks to Google Jules AI agent (async bug fixes, docs, tests, features) |
 | [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
+| [notebooklm](skills/notebooklm/) | Query NotebookLM notebooks with persistent auth and local notebook library |
 
 ### Google Workspace Skills
 
@@ -176,6 +177,13 @@ export MANUS_API_KEY=your-api-key
 ```
 Get your API key from [manus.im](https://manus.im) settings. Manus excels at deep research, market analysis, product comparisons, and generating comprehensive reports with visualizations.
 
+### NotebookLM
+```bash
+pip install -r skills/notebooklm/requirements.txt
+python -m playwright install chromium
+```
+Use `python skills/notebooklm/scripts/auth_manager.py setup` for one-time login.
+
 ### Google Workspace Skills
 Each Google Workspace skill requires the `keyring` library and first-time authentication:
 ```bash
@@ -231,6 +239,11 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Have Manus analyze AAPL stock with technical indicators"
 - "Delegate market research on EV charging to Manus"
 - "Ask Manus to compare AWS vs GCP vs Azure pricing"
+
+### NotebookLM
+- "Query this NotebookLM URL and summarize key points"
+- "Add this NotebookLM link to library with topics"
+- "Ask follow-up questions against my active notebook"
 
 ### Google Workspace
 - "List my Google Chat spaces" / "Send a message to Project Alpha"
