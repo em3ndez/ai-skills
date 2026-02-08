@@ -10,7 +10,9 @@ import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
+from playwright.sync_api import Error as PlaywrightError
 
 
 NOTEBOOKLM_HOME_URL = "https://notebooklm.google.com/"
@@ -230,6 +232,32 @@ def get_active_notebook(library: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     if not active_id:
         return None
     return get_notebook_by_id(library, active_id)
+
+
+def launch_persistent_context(
+    playwright,
+    headless: bool,
+    profile: Optional[str] = None,
+    viewport: Optional[Tuple[int, int]] = None,
+):
+    """Launch a persistent Chromium context with reusable profile directory."""
+    vw, vh = viewport or (1280, 900)
+    profile_dir = str(get_profile_dir(profile))
+    common_args = {
+        "user_data_dir": profile_dir,
+        "headless": headless,
+        "viewport": {"width": vw, "height": vh},
+        "args": [
+            "--disable-blink-features=AutomationControlled",
+            "--disable-dev-shm-usage",
+            "--no-first-run",
+            "--no-default-browser-check",
+        ],
+    }
+    try:
+        return playwright.chromium.launch_persistent_context(channel="chrome", **common_args)
+    except PlaywrightError:
+        return playwright.chromium.launch_persistent_context(**common_args)
 
 
 def record_notebook_use(library: Dict[str, Any], notebook_id: str) -> Optional[Dict[str, Any]]:

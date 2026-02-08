@@ -34,7 +34,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
 | [jules](skills/jules/) | Delegate coding tasks to Google Jules AI agent (async bug fixes, docs, tests, features) |
 | [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
-| [notebooklm](skills/notebooklm/) | Query NotebookLM notebooks with persistent auth and local notebook library |
+| [notebooklm](skills/notebooklm/) | Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports |
 
 ### Google Workspace Skills
 

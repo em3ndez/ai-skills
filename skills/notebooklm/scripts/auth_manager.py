@@ -13,7 +13,6 @@ import time
 from pathlib import Path
 from typing import Dict, List
 
-from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 from common import (
@@ -22,6 +21,7 @@ from common import (
     ensure_data_dirs,
     get_data_dir,
     get_profile_dir,
+    launch_persistent_context,
     sanitize_profile_name,
 )
 
@@ -38,30 +38,10 @@ CRITICAL_COOKIE_NAMES = {
 DEFAULT_AUTH_TIMEOUT_SEC = 600
 
 
-def _launch_persistent_context(playwright, headless: bool, profile: str):
-    profile_dir = str(get_profile_dir(profile))
-    common_args = {
-        "user_data_dir": profile_dir,
-        "headless": headless,
-        "viewport": {"width": 1280, "height": 900},
-        "args": [
-            "--disable-blink-features=AutomationControlled",
-            "--disable-dev-shm-usage",
-            "--no-first-run",
-            "--no-default-browser-check",
-        ],
-    }
-
-    try:
-        return playwright.chromium.launch_persistent_context(channel="chrome", **common_args)
-    except PlaywrightError:
-        return playwright.chromium.launch_persistent_context(**common_args)
-
-
 def _auth_status(profile: str) -> Dict:
     ensure_data_dirs()
     with sync_playwright() as p:
-        context = _launch_persistent_context(p, headless=True, profile=profile)
+        context = launch_persistent_context(p, headless=True, profile=profile)
         page = context.new_page()
         try:
             page.goto(NOTEBOOKLM_HOME_URL, wait_until="domcontentloaded", timeout=60000)
@@ -84,7 +64,7 @@ def _auth_status(profile: str) -> Dict:
 def _setup_auth(timeout_seconds: int, profile: str) -> Dict:
     ensure_data_dirs()
     with sync_playwright() as p:
-        context = _launch_persistent_context(p, headless=False, profile=profile)
+        context = launch_persistent_context(p, headless=False, profile=profile)
         page = context.new_page()
         try:
             page.goto(NOTEBOOKLM_AUTH_URL, wait_until="domcontentloaded", timeout=60000)

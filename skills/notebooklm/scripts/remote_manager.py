@@ -34,8 +34,8 @@ from common import (
     get_artifacts_dir,
     get_notebook_by_id,
     get_notebook_by_url,
-    get_profile_dir,
     is_valid_notebook_url,
+    launch_persistent_context,
     load_library,
     load_source_state,
     now_iso,
@@ -105,25 +105,6 @@ def _capture_debug_artifacts(page: Page, args, command_name: str, attempt: int, 
         return None
 
 
-def _launch_persistent_context(playwright, headless: bool, profile: Optional[str] = None):
-    profile_dir = str(get_profile_dir(profile))
-    common_args = {
-        "user_data_dir": profile_dir,
-        "headless": headless,
-        "viewport": {"width": 1600, "height": 1100},
-        "args": [
-            "--disable-blink-features=AutomationControlled",
-            "--disable-dev-shm-usage",
-            "--no-first-run",
-            "--no-default-browser-check",
-        ],
-    }
-    try:
-        return playwright.chromium.launch_persistent_context(channel="chrome", **common_args)
-    except PlaywrightError:
-        return playwright.chromium.launch_persistent_context(**common_args)
-
-
 def _run_browser_command(args, command_name: str, action: Callable[[Page], Dict]) -> Dict:
     attempts = _command_attempts(args)
     profile = sanitize_profile_name(getattr(args, "profile", "default"))
@@ -132,10 +113,11 @@ def _run_browser_command(args, command_name: str, action: Callable[[Page], Dict]
 
     for attempt in range(1, attempts + 1):
         with sync_playwright() as p:
-            context = _launch_persistent_context(
+            context = launch_persistent_context(
                 p,
                 headless=not getattr(args, "show_browser", False),
                 profile=profile,
+                viewport=(1600, 1100),
             )
             page = context.new_page()
             try:

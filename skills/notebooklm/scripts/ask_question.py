@@ -24,8 +24,8 @@ from common import (
     get_notes_dir,
     get_notebook_by_id,
     get_notebook_by_url,
-    get_profile_dir,
     is_valid_notebook_url,
+    launch_persistent_context,
     load_library,
     now_iso,
     parse_csv_values,
@@ -123,25 +123,6 @@ def _is_retryable_error(message: str) -> bool:
     if any(keyword in lower for keyword in RATE_LIMIT_KEYWORDS):
         return False
     return any(keyword in lower for keyword in RETRYABLE_ERROR_KEYWORDS)
-
-
-def _launch_persistent_context(playwright, headless: bool, profile: Optional[str]):
-    profile_dir = str(get_profile_dir(profile))
-    common_args = {
-        "user_data_dir": profile_dir,
-        "headless": headless,
-        "viewport": {"width": 1280, "height": 900},
-        "args": [
-            "--disable-blink-features=AutomationControlled",
-            "--disable-dev-shm-usage",
-            "--no-first-run",
-            "--no-default-browser-check",
-        ],
-    }
-    try:
-        return playwright.chromium.launch_persistent_context(channel="chrome", **common_args)
-    except PlaywrightError:
-        return playwright.chromium.launch_persistent_context(**common_args)
 
 
 def _is_transient_placeholder(text: str) -> bool:
@@ -455,7 +436,7 @@ def _ask_with_retries(
 
     for attempt in range(1, attempts + 1):
         with sync_playwright() as p:
-            context = _launch_persistent_context(
+            context = launch_persistent_context(
                 p,
                 headless=not args.show_browser,
                 profile=profile,
