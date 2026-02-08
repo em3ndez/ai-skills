@@ -54,7 +54,28 @@ Lightweight alternatives to the full [Google Workspace MCP server](https://githu
 
 ## Installation
 
-### Option 1: Clone entire repository
+### Option 1: Skills CLI (Recommended)
+
+Install skills using [`npx skills`](https://github.com/vercel-labs/skills), the package manager for the open agent skills ecosystem:
+
+```bash
+# Browse available skills
+npx skills add sanjay3290/ai-skills --list
+
+# Install a specific skill
+npx skills add sanjay3290/ai-skills --skill postgres
+
+# Install all skills
+npx skills add sanjay3290/ai-skills --all
+
+# Install for a specific agent
+npx skills add sanjay3290/ai-skills --skill notebooklm -a claude-code
+
+# Install multiple skills for multiple agents
+npx skills add sanjay3290/ai-skills --skill postgres --skill imagen -a claude-code -a gemini
+```
+
+### Option 2: Clone entire repository
 
 ```bash
 # Clone to your preferred skills directory
@@ -68,14 +89,14 @@ git clone https://github.com/sanjay3290/ai-skills.git ~/.claude/skills/ai-skills
 # git clone https://github.com/sanjay3290/ai-skills.git ~/.config/goose/skills/ai-skills
 ```
 
-### Option 2: Copy individual skills
+### Option 3: Copy individual skills
 
 ```bash
 # Example: Install just the postgres skill
 cp -r skills/postgres ~/.claude/skills/
 ```
 
-### Option 3: Symlink for development
+### Option 4: Symlink for development
 
 ```bash
 # Symlink skills for easy updates
