@@ -6,6 +6,8 @@ Lightweight alternative to the full Google Workspace MCP server.
 
 import argparse
 import json
+import mimetypes
+import os
 import sys
 import urllib.request
 import urllib.error
@@ -15,6 +17,7 @@ from typing import Optional
 from auth import get_valid_access_token
 
 CHAT_API_BASE = "https://chat.googleapis.com/v1"
+CHAT_UPLOAD_BASE = "https://chat.googleapis.com/upload/v1"
 
 
 def api_request(method: str, endpoint: str, data: Optional[dict] = None, params: Optional[dict] = None) -> dict:
@@ -47,6 +50,74 @@ def api_request(method: str, endpoint: str, data: Optional[dict] = None, params:
         return {"error": "Invalid JSON response"}
 
 
+def upload_attachment(space_name: str, file_path: str, text: str = "") -> dict:
+    """Send a message with a file attachment (two-step: upload then send)."""
+    import requests as req_lib
+
+    token = get_valid_access_token()
+    if not token:
+        return {"error": "Failed to get access token"}
+
+    if not os.path.isfile(file_path):
+        return {"error": f"File not found: {file_path}"}
+
+    mime_type, _ = mimetypes.guess_type(file_path)
+    if not mime_type:
+        mime_type = "application/octet-stream"
+
+    filename = os.path.basename(file_path)
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Step 1: Upload the file to get an attachment token
+    upload_url = f"{CHAT_UPLOAD_BASE}/{space_name}/attachments:upload"
+    metadata = json.dumps({"filename": filename})
+
+    with open(file_path, 'rb') as f:
+        upload_resp = req_lib.post(
+            upload_url,
+            headers=headers,
+            files={
+                "metadata": ("metadata", metadata, "application/json"),
+                "file": (filename, f, mime_type),
+            },
+            params={"uploadType": "multipart"},
+            timeout=60,
+        )
+
+    if upload_resp.status_code != 200:
+        return {"error": f"Upload failed HTTP {upload_resp.status_code}: {upload_resp.text}"}
+
+    upload_data = upload_resp.json()
+    attachment_token = upload_data.get("attachmentDataRef", {}).get("attachmentUploadToken")
+    if not attachment_token:
+        return {"error": "Upload succeeded but no attachment token returned"}
+
+    # Step 2: Send message with the attachment reference
+    msg_url = f"{CHAT_API_BASE}/{space_name}/messages"
+    msg_data = {
+        "text": text,
+        "attachment": [{
+            "contentName": filename,
+            "contentType": mime_type,
+            "attachmentDataRef": {
+                "attachmentUploadToken": attachment_token
+            }
+        }]
+    }
+
+    msg_resp = req_lib.post(
+        msg_url,
+        headers={**headers, "Content-Type": "application/json"},
+        data=json.dumps(msg_data),
+        timeout=30,
+    )
+
+    if msg_resp.status_code != 200:
+        return {"error": f"Send failed HTTP {msg_resp.status_code}: {msg_resp.text}"}
+
+    return msg_resp.json()
+
+
 def list_spaces() -> dict:
     """List all spaces the user is a member of."""
     result = api_request("GET", "spaces")
@@ -75,13 +146,15 @@ def get_messages(space_name: str, page_size: int = 25, page_token: Optional[str]
     return api_request("GET", f"{space_name}/messages", params=params)
 
 
-def send_message(space_name: str, text: str) -> dict:
-    """Send a message to a space."""
+def send_message(space_name: str, text: str, attachment: Optional[str] = None) -> dict:
+    """Send a message to a space, optionally with a file attachment."""
+    if attachment:
+        return upload_attachment(space_name, attachment, text)
     return api_request("POST", f"{space_name}/messages", data={"text": text})
 
 
-def send_dm(email: str, text: str) -> dict:
-    """Send a direct message to a user by email."""
+def send_dm(email: str, text: str, attachment: Optional[str] = None) -> dict:
+    """Send a direct message to a user by email, optionally with a file attachment."""
     # First, set up or find the DM space
     space_data = {
         "space": {"spaceType": "DIRECT_MESSAGE"},
@@ -96,7 +169,9 @@ def send_dm(email: str, text: str) -> dict:
     if not space_name:
         return {"error": "Failed to create DM space"}
 
-    # Send the message
+    # Send the message (with or without attachment)
+    if attachment:
+        return upload_attachment(space_name, attachment, text)
     return api_request("POST", f"{space_name}/messages", data={"text": text})
 
 
@@ -167,12 +242,14 @@ def main():
     # send-message
     send_message_parser = subparsers.add_parser("send-message", help="Send a message to a space")
     send_message_parser.add_argument("space", help="Space name (e.g., spaces/AAAA123)")
-    send_message_parser.add_argument("text", help="Message text")
+    send_message_parser.add_argument("text", nargs="?", default="", help="Message text")
+    send_message_parser.add_argument("--attachment", help="Path to file to attach")
 
     # send-dm
     send_dm_parser = subparsers.add_parser("send-dm", help="Send a direct message")
     send_dm_parser.add_argument("email", help="Recipient email address")
-    send_dm_parser.add_argument("text", help="Message text")
+    send_dm_parser.add_argument("text", nargs="?", default="", help="Message text")
+    send_dm_parser.add_argument("--attachment", help="Path to file to attach")
 
     # find-dm
     find_dm_parser = subparsers.add_parser("find-dm", help="Find or create DM space")
@@ -197,9 +274,9 @@ def main():
     elif args.command == "get-messages":
         result = get_messages(args.space, args.limit, args.page_token)
     elif args.command == "send-message":
-        result = send_message(args.space, args.text)
+        result = send_message(args.space, args.text, args.attachment)
     elif args.command == "send-dm":
-        result = send_dm(args.email, args.text)
+        result = send_dm(args.email, args.text, args.attachment)
     elif args.command == "find-dm":
         result = find_dm_by_email(args.email)
     elif args.command == "list-threads":

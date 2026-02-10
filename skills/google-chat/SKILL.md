@@ -47,8 +47,14 @@ python scripts/chat.py get-messages spaces/AAAA123 --limit 10
 # Send a message to a space
 python scripts/chat.py send-message spaces/AAAA123 "Hello team!"
 
+# Send a message with file attachment
+python scripts/chat.py send-message spaces/AAAA123 "Here's the report" --attachment /path/to/file.pdf
+
 # Send a direct message
 python scripts/chat.py send-dm user@example.com "Hey, quick question..."
+
+# Send a DM with file attachment
+python scripts/chat.py send-dm user@example.com "Please review" --attachment /path/to/file.pdf
 
 # Find or create DM space with someone
 python scripts/chat.py find-dm user@example.com
