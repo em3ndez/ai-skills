@@ -7,6 +7,8 @@ Lightweight alternative to the full Google Workspace MCP server.
 import argparse
 import base64
 import json
+import mimetypes
+import os
 import sys
 import urllib.request
 import urllib.error
@@ -51,7 +53,8 @@ def api_request(method: str, endpoint: str, data: Optional[dict] = None, params:
 
 def create_mime_message(to: str, subject: str, body: str,
                         cc: Optional[str] = None, bcc: Optional[str] = None,
-                        is_html: bool = False, from_addr: Optional[str] = None) -> str:
+                        is_html: bool = False, from_addr: Optional[str] = None,
+                        attachments: Optional[list] = None) -> str:
     """Create a base64url-encoded MIME message for Gmail API using email module."""
     msg = EmailMessage()
     msg['To'] = to
@@ -71,6 +74,21 @@ def create_mime_message(to: str, subject: str, body: str,
         msg.set_content(body, subtype='html')
     else:
         msg.set_content(body)
+
+    # Add attachments
+    if attachments:
+        for filepath in attachments:
+            filepath = os.path.expanduser(filepath)
+            if not os.path.isfile(filepath):
+                raise FileNotFoundError(f"Attachment not found: {filepath}")
+            filename = os.path.basename(filepath)
+            mime_type, _ = mimetypes.guess_type(filepath)
+            if mime_type is None:
+                mime_type = 'application/octet-stream'
+            maintype, subtype = mime_type.split('/', 1)
+            with open(filepath, 'rb') as f:
+                file_data = f.read()
+            msg.add_attachment(file_data, maintype=maintype, subtype=subtype, filename=filename)
 
     # Encode to base64url format required by Gmail API
     return base64.urlsafe_b64encode(msg.as_bytes()).decode('ascii')
@@ -179,9 +197,10 @@ def get_message(message_id: str, format: str = "full") -> dict:
 
 def send_email(to: str, subject: str, body: str,
                cc: Optional[str] = None, bcc: Optional[str] = None,
-               is_html: bool = False, from_addr: Optional[str] = None) -> dict:
+               is_html: bool = False, from_addr: Optional[str] = None,
+               attachments: Optional[list] = None) -> dict:
     """Send an email."""
-    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr)
+    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr, attachments)
 
     result = api_request("POST", "users/me/messages/send", data={"raw": mime_message})
 
@@ -198,9 +217,10 @@ def send_email(to: str, subject: str, body: str,
 
 def create_draft(to: str, subject: str, body: str,
                  cc: Optional[str] = None, bcc: Optional[str] = None,
-                 is_html: bool = False, from_addr: Optional[str] = None) -> dict:
+                 is_html: bool = False, from_addr: Optional[str] = None,
+                 attachments: Optional[list] = None) -> dict:
     """Create a draft email."""
-    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr)
+    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr, attachments)
 
     result = api_request("POST", "users/me/drafts", data={
         "message": {"raw": mime_message}
@@ -306,6 +326,7 @@ def main():
     send_parser.add_argument("--bcc", help="BCC email address(es), comma-separated")
     send_parser.add_argument("--html", action="store_true", help="Send as HTML email")
     send_parser.add_argument("--from", dest="from_addr", help="Send from alias email address (must be configured in Gmail)")
+    send_parser.add_argument("--attach", action="append", dest="attachments", help="File path to attach (can repeat for multiple files)")
 
     # create-draft
     draft_parser = subparsers.add_parser("create-draft", help="Create a draft email")
@@ -316,6 +337,7 @@ def main():
     draft_parser.add_argument("--bcc", help="BCC email address(es), comma-separated")
     draft_parser.add_argument("--html", action="store_true", help="Create as HTML email")
     draft_parser.add_argument("--from", dest="from_addr", help="Send from alias email address (must be configured in Gmail)")
+    draft_parser.add_argument("--attach", action="append", dest="attachments", help="File path to attach (can repeat for multiple files)")
 
     # send-draft
     send_draft_parser = subparsers.add_parser("send-draft", help="Send a draft email")
@@ -339,9 +361,9 @@ def main():
     elif args.command == "get":
         result = get_message(args.message_id, args.format)
     elif args.command == "send":
-        result = send_email(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr)
+        result = send_email(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr, args.attachments)
     elif args.command == "create-draft":
-        result = create_draft(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr)
+        result = create_draft(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr, args.attachments)
     elif args.command == "send-draft":
         result = send_draft(args.draft_id)
     elif args.command == "modify":

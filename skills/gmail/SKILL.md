@@ -77,6 +77,14 @@ python scripts/gmail.py send --to "user@example.com" --cc "cc@example.com" --bcc
 python scripts/gmail.py send --to "user@example.com" --subject "Hello" --body "Message" \
   --from "My Alias <alias@example.com>"
 
+# Send with attachment(s)
+python scripts/gmail.py send --to "user@example.com" --subject "Report" --body "See attached" \
+  --attach ~/Documents/report.pdf
+
+# Send with multiple attachments
+python scripts/gmail.py send --to "user@example.com" --subject "Files" --body "See attached" \
+  --attach ~/Documents/report.pdf --attach ~/Documents/data.csv
+
 # Send HTML email
 python scripts/gmail.py send --to "user@example.com" --subject "HTML Email" \
   --body "<h1>Hello</h1><p>HTML content</p>" --html
@@ -88,6 +96,10 @@ python scripts/gmail.py send --to "user@example.com" --subject "HTML Email" \
 # Create a draft
 python scripts/gmail.py create-draft --to "user@example.com" --subject "Draft Subject" \
   --body "Draft content"
+
+# Create a draft with attachment
+python scripts/gmail.py create-draft --to "user@example.com" --subject "Draft with file" \
+  --body "See attached" --attach ~/Documents/report.pdf
 
 # Send an existing draft
 python scripts/gmail.py send-draft DRAFT_ID
