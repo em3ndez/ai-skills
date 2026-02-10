@@ -73,6 +73,10 @@ python scripts/gmail.py send --to "user@example.com" --subject "Hello" --body "M
 python scripts/gmail.py send --to "user@example.com" --cc "cc@example.com" --bcc "bcc@example.com" \
   --subject "Team Update" --body "Update message"
 
+# Send from an alias (must be configured in Gmail settings)
+python scripts/gmail.py send --to "user@example.com" --subject "Hello" --body "Message" \
+  --from "My Alias <alias@example.com>"
+
 # Send HTML email
 python scripts/gmail.py send --to "user@example.com" --subject "HTML Email" \
   --body "<h1>Hello</h1><p>HTML content</p>" --html

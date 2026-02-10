@@ -179,9 +179,9 @@ def get_message(message_id: str, format: str = "full") -> dict:
 
 def send_email(to: str, subject: str, body: str,
                cc: Optional[str] = None, bcc: Optional[str] = None,
-               is_html: bool = False) -> dict:
+               is_html: bool = False, from_addr: Optional[str] = None) -> dict:
     """Send an email."""
-    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html)
+    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr)
 
     result = api_request("POST", "users/me/messages/send", data={"raw": mime_message})
 
@@ -198,9 +198,9 @@ def send_email(to: str, subject: str, body: str,
 
 def create_draft(to: str, subject: str, body: str,
                  cc: Optional[str] = None, bcc: Optional[str] = None,
-                 is_html: bool = False) -> dict:
+                 is_html: bool = False, from_addr: Optional[str] = None) -> dict:
     """Create a draft email."""
-    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html)
+    mime_message = create_mime_message(to, subject, body, cc, bcc, is_html, from_addr)
 
     result = api_request("POST", "users/me/drafts", data={
         "message": {"raw": mime_message}
@@ -305,6 +305,7 @@ def main():
     send_parser.add_argument("--cc", help="CC email address(es), comma-separated")
     send_parser.add_argument("--bcc", help="BCC email address(es), comma-separated")
     send_parser.add_argument("--html", action="store_true", help="Send as HTML email")
+    send_parser.add_argument("--from", dest="from_addr", help="Send from alias email address (must be configured in Gmail)")
 
     # create-draft
     draft_parser = subparsers.add_parser("create-draft", help="Create a draft email")
@@ -314,6 +315,7 @@ def main():
     draft_parser.add_argument("--cc", help="CC email address(es), comma-separated")
     draft_parser.add_argument("--bcc", help="BCC email address(es), comma-separated")
     draft_parser.add_argument("--html", action="store_true", help="Create as HTML email")
+    draft_parser.add_argument("--from", dest="from_addr", help="Send from alias email address (must be configured in Gmail)")
 
     # send-draft
     send_draft_parser = subparsers.add_parser("send-draft", help="Send a draft email")
@@ -337,9 +339,9 @@ def main():
     elif args.command == "get":
         result = get_message(args.message_id, args.format)
     elif args.command == "send":
-        result = send_email(args.to, args.subject, args.body, args.cc, args.bcc, args.html)
+        result = send_email(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr)
     elif args.command == "create-draft":
-        result = create_draft(args.to, args.subject, args.body, args.cc, args.bcc, args.html)
+        result = create_draft(args.to, args.subject, args.body, args.cc, args.bcc, args.html, args.from_addr)
     elif args.command == "send-draft":
         result = send_draft(args.draft_id)
     elif args.command == "modify":
