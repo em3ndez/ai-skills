@@ -1,17 +1,18 @@
 ---
 name: google-drive
 description: |
-  Interact with Google Drive - search files, find folders, list contents, and download files.
-  Use when user asks to: search Google Drive, find a file/folder, list Drive contents,
-  download a file from Drive, or browse Drive folders. Lightweight alternative to full
-  Google Workspace MCP server with standalone OAuth authentication.
+  Interact with Google Drive - search files, find folders, list contents, download files, upload files,
+  create folders, move, copy, rename, and trash files. Use when user asks to: search Google Drive,
+  find a file/folder, list Drive contents, download or upload files, create folders, move files,
+  or organize Drive content. Lightweight integration with standalone OAuth authentication supporting
+  full read/write access.
 ---
 
 # Google Drive
 
-Lightweight Google Drive integration with standalone OAuth authentication. No MCP server required.
+Lightweight Google Drive integration with standalone OAuth authentication. No MCP server required. Full read/write access.
 
-> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
+> **Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## First-Time Setup
 
@@ -30,7 +31,7 @@ Logout when needed:
 python scripts/auth.py logout
 ```
 
-## Commands
+## Read Commands
 
 All operations via `scripts/drive.py`. Auto-authenticates on first use if not logged in.
 
@@ -61,6 +62,38 @@ python scripts/drive.py list 1ABC123xyz --limit 20
 
 # Download a file
 python scripts/drive.py download 1ABC123xyz ./downloads/report.pdf
+```
+
+## Write Commands
+
+```bash
+# Upload a file to Drive root
+python scripts/drive.py upload ~/Documents/report.pdf
+
+# Upload to a specific folder
+python scripts/drive.py upload ~/Documents/report.pdf --folder 1ABC123xyz
+
+# Upload with a custom name
+python scripts/drive.py upload ~/Documents/report.pdf --name "Q4 Report.pdf"
+
+# Create a new folder
+python scripts/drive.py create-folder "Project Documents"
+
+# Create a folder inside another folder
+python scripts/drive.py create-folder "Attachments" --parent 1ABC123xyz
+
+# Move a file to a different folder
+python scripts/drive.py move FILE_ID DESTINATION_FOLDER_ID
+
+# Copy a file
+python scripts/drive.py copy FILE_ID
+python scripts/drive.py copy FILE_ID --name "Report Copy" --folder 1ABC123xyz
+
+# Rename a file or folder
+python scripts/drive.py rename FILE_ID "New Name.pdf"
+
+# Move a file to trash
+python scripts/drive.py trash FILE_ID
 ```
 
 ## Search Query Formats

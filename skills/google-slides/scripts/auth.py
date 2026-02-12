@@ -30,10 +30,10 @@ REFRESH_ENDPOINT = f"{CLOUD_FUNCTION_URL}/refreshToken"
 KEYCHAIN_SERVICE = "google-slides-skill-oauth"
 KEYCHAIN_ACCOUNT = "main-account"
 
-# Google Slides requires these scopes
+# Google Slides requires these scopes (read/write)
 SCOPES = [
-    "https://www.googleapis.com/auth/presentations.readonly",
-    "https://www.googleapis.com/auth/drive.readonly",
+    "https://www.googleapis.com/auth/presentations",
+    "https://www.googleapis.com/auth/drive",
     "https://www.googleapis.com/auth/userinfo.profile",
 ]
 

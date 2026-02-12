@@ -303,6 +303,189 @@ def download(file_id: str, local_path: str) -> dict:
         return {"error": f"Failed to write file: {e}"}
 
 
+def api_write_request(method: str, endpoint: str, data: Optional[dict] = None,
+                      params: Optional[dict] = None) -> dict:
+    """Make an authenticated write request (POST/PATCH) to the Google Drive API."""
+    token = get_valid_access_token()
+    if not token:
+        return {"error": "Failed to get access token"}
+
+    url = f"{DRIVE_API_BASE}/{endpoint}"
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json"
+    }
+
+    body = json.dumps(data).encode('utf-8') if data else None
+
+    try:
+        req = urllib.request.Request(url, data=body, headers=headers, method=method)
+        with urllib.request.urlopen(req, timeout=60) as response:
+            response_data = response.read().decode('utf-8')
+            return json.loads(response_data) if response_data else {"success": True}
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode('utf-8') if e.fp else str(e)
+        return {"error": f"HTTP {e.code}: {error_body}"}
+    except urllib.error.URLError as e:
+        return {"error": f"Request failed: {e.reason}"}
+    except json.JSONDecodeError:
+        return {"success": True}
+
+
+def upload(local_path: str, folder_id: Optional[str] = None, name: Optional[str] = None) -> dict:
+    """
+    Upload a file to Google Drive.
+
+    Args:
+        local_path: Path to the local file to upload
+        folder_id: Target folder ID (uploads to root if not specified)
+        name: Name for the file in Drive (uses local filename if not specified)
+    """
+    import mimetypes
+
+    abs_path = os.path.abspath(os.path.expanduser(local_path))
+
+    if not os.path.exists(abs_path):
+        return {"error": f"File not found: {abs_path}"}
+
+    file_name = name or os.path.basename(abs_path)
+    mime_type = mimetypes.guess_type(abs_path)[0] or "application/octet-stream"
+
+    # Read file content
+    try:
+        with open(abs_path, 'rb') as f:
+            file_content = f.read()
+    except IOError as e:
+        return {"error": f"Failed to read file: {e}"}
+
+    # Build metadata
+    metadata = {"name": file_name}
+    if folder_id:
+        metadata["parents"] = [folder_id]
+
+    # Use multipart upload
+    token = get_valid_access_token()
+    if not token:
+        return {"error": "Failed to get access token"}
+
+    boundary = "skill_upload_boundary"
+    body = (
+        f"--{boundary}\r\n"
+        f"Content-Type: application/json; charset=UTF-8\r\n\r\n"
+        f"{json.dumps(metadata)}\r\n"
+        f"--{boundary}\r\n"
+        f"Content-Type: {mime_type}\r\n\r\n"
+    ).encode('utf-8') + file_content + f"\r\n--{boundary}--".encode('utf-8')
+
+    url = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": f"multipart/related; boundary={boundary}",
+    }
+
+    try:
+        req = urllib.request.Request(url, data=body, headers=headers, method="POST")
+        with urllib.request.urlopen(req, timeout=120) as response:
+            result = json.loads(response.read().decode('utf-8'))
+            return {
+                "success": True,
+                "fileId": result.get("id"),
+                "name": result.get("name"),
+                "mimeType": result.get("mimeType")
+            }
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode('utf-8') if e.fp else str(e)
+        return {"error": f"HTTP {e.code}: {error_body}"}
+    except urllib.error.URLError as e:
+        return {"error": f"Upload failed: {e.reason}"}
+
+
+def create_folder(folder_name: str, parent_id: Optional[str] = None) -> dict:
+    """
+    Create a new folder in Google Drive.
+
+    Args:
+        folder_name: Name of the new folder
+        parent_id: Parent folder ID (creates in root if not specified)
+    """
+    metadata = {
+        "name": folder_name,
+        "mimeType": "application/vnd.google-apps.folder"
+    }
+    if parent_id:
+        metadata["parents"] = [parent_id]
+
+    return api_write_request("POST", "files", data=metadata)
+
+
+def move_file(file_id: str, new_parent_id: str) -> dict:
+    """
+    Move a file to a different folder.
+
+    Args:
+        file_id: ID of the file to move
+        new_parent_id: ID of the destination folder
+    """
+    # Get current parents
+    current = api_request("GET", f"files/{file_id}", {"fields": "parents"})
+    if isinstance(current, dict) and "error" in current:
+        return current
+
+    old_parents = ",".join(current.get("parents", []))
+
+    params = {
+        "addParents": new_parent_id,
+        "removeParents": old_parents,
+        "fields": "id, name, parents"
+    }
+
+    return api_write_request("PATCH", f"files/{file_id}", params=params)
+
+
+def copy_file(file_id: str, new_name: Optional[str] = None, folder_id: Optional[str] = None) -> dict:
+    """
+    Copy a file.
+
+    Args:
+        file_id: ID of the file to copy
+        new_name: Name for the copy (defaults to "Copy of <original>")
+        folder_id: Destination folder ID (same folder if not specified)
+    """
+    data = {}
+    if new_name:
+        data["name"] = new_name
+    if folder_id:
+        data["parents"] = [folder_id]
+
+    return api_write_request("POST", f"files/{file_id}/copy", data=data)
+
+
+def rename_file(file_id: str, new_name: str) -> dict:
+    """
+    Rename a file or folder.
+
+    Args:
+        file_id: ID of the file/folder to rename
+        new_name: New name
+    """
+    return api_write_request("PATCH", f"files/{file_id}", data={"name": new_name},
+                             params={"fields": "id, name"})
+
+
+def trash_file(file_id: str) -> dict:
+    """
+    Move a file or folder to trash.
+
+    Args:
+        file_id: ID of the file/folder to trash
+    """
+    return api_write_request("PATCH", f"files/{file_id}", data={"trashed": True},
+                             params={"fields": "id, name, trashed"})
+
+
 def main():
     parser = argparse.ArgumentParser(description="Google Drive API operations")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -329,6 +512,37 @@ def main():
     download_parser.add_argument("file_id", help="File ID to download")
     download_parser.add_argument("local_path", help="Local path to save file")
 
+    # upload
+    upload_parser = subparsers.add_parser("upload", help="Upload a file to Drive")
+    upload_parser.add_argument("local_path", help="Path to local file")
+    upload_parser.add_argument("--folder", help="Target folder ID")
+    upload_parser.add_argument("--name", help="Name for file in Drive (default: local filename)")
+
+    # create-folder
+    create_folder_parser = subparsers.add_parser("create-folder", help="Create a new folder")
+    create_folder_parser.add_argument("name", help="Folder name")
+    create_folder_parser.add_argument("--parent", help="Parent folder ID")
+
+    # move
+    move_parser = subparsers.add_parser("move", help="Move a file to another folder")
+    move_parser.add_argument("file_id", help="File ID to move")
+    move_parser.add_argument("folder_id", help="Destination folder ID")
+
+    # copy
+    copy_parser = subparsers.add_parser("copy", help="Copy a file")
+    copy_parser.add_argument("file_id", help="File ID to copy")
+    copy_parser.add_argument("--name", help="Name for the copy")
+    copy_parser.add_argument("--folder", help="Destination folder ID")
+
+    # rename
+    rename_parser = subparsers.add_parser("rename", help="Rename a file or folder")
+    rename_parser.add_argument("file_id", help="File/folder ID")
+    rename_parser.add_argument("new_name", help="New name")
+
+    # trash
+    trash_parser = subparsers.add_parser("trash", help="Move a file to trash")
+    trash_parser.add_argument("file_id", help="File/folder ID to trash")
+
     args = parser.parse_args()
 
     if args.command == "search":
@@ -339,6 +553,18 @@ def main():
         result = list_files(args.folder_id, args.limit, args.page_token)
     elif args.command == "download":
         result = download(args.file_id, args.local_path)
+    elif args.command == "upload":
+        result = upload(args.local_path, args.folder, args.name)
+    elif args.command == "create-folder":
+        result = create_folder(args.name, args.parent)
+    elif args.command == "move":
+        result = move_file(args.file_id, args.folder_id)
+    elif args.command == "copy":
+        result = copy_file(args.file_id, args.name, args.folder)
+    elif args.command == "rename":
+        result = rename_file(args.file_id, args.new_name)
+    elif args.command == "trash":
+        result = trash_file(args.file_id)
     else:
         result = {"error": f"Unknown command: {args.command}"}
 

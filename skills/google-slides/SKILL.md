@@ -1,17 +1,17 @@
 ---
 name: google-slides
 description: |
-  Read content from Google Slides presentations - get text, find presentations, and retrieve metadata.
-  Use when user asks to: read a presentation, find slides, get presentation content, search for a slideshow,
-  or check presentation details. Lightweight alternative to full Google Workspace MCP server with standalone
-  OAuth authentication. Read-only operations only.
+  Read and write Google Slides presentations - get text, find presentations, create presentations, add slides,
+  replace text, and manage slide content. Use when user asks to: read a presentation, create slides, find slides,
+  add a slide, replace text in a presentation, or manage presentation content. Lightweight integration with
+  standalone OAuth authentication supporting full read/write access.
 ---
 
 # Google Slides
 
-Lightweight Google Slides integration with standalone OAuth authentication. No MCP server required.
+Lightweight Google Slides integration with standalone OAuth authentication. No MCP server required. Full read/write access.
 
-> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
+> **Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## First-Time Setup
 
@@ -30,7 +30,7 @@ Logout when needed:
 python scripts/auth.py logout
 ```
 
-## Commands
+## Read Commands
 
 All operations via `scripts/slides.py`. Auto-authenticates on first use if not logged in.
 
@@ -43,9 +43,48 @@ python scripts/slides.py get-text "https://docs.google.com/presentation/d/1abc12
 python scripts/slides.py find "quarterly report"
 python scripts/slides.py find "project proposal" --limit 5
 
-# Get presentation metadata (title, slide count, etc.)
+# Get presentation metadata (title, slide count, slide object IDs)
 python scripts/slides.py get-metadata "1abc123xyz789"
 ```
+
+## Write Commands
+
+```bash
+# Create a new empty presentation
+python scripts/slides.py create "Q4 Sales Report"
+
+# Add a blank slide to the end
+python scripts/slides.py add-slide "1abc123xyz789"
+
+# Add a slide with a specific layout
+python scripts/slides.py add-slide "1abc123xyz789" --layout TITLE_AND_BODY
+
+# Add a slide at a specific position (0-based index)
+python scripts/slides.py add-slide "1abc123xyz789" --layout TITLE --at 0
+
+# Find and replace text across all slides
+python scripts/slides.py replace-text "1abc123xyz789" "old text" "new text"
+python scripts/slides.py replace-text "1abc123xyz789" "Draft" "Final" --match-case
+
+# Delete a slide by object ID (use get-metadata to find IDs)
+python scripts/slides.py delete-slide "1abc123xyz789" "g123abc456"
+
+# Batch update (advanced - for formatting, inserting shapes, images, etc.)
+python scripts/slides.py batch-update "1abc123xyz789" '[{"replaceAllText":{"containsText":{"text":"foo"},"replaceText":"bar"}}]'
+```
+
+## Slide Layouts
+
+Available layouts for `add-slide --layout`:
+- `BLANK` - Empty slide (default)
+- `TITLE` - Title slide
+- `TITLE_AND_BODY` - Title with body text
+- `TITLE_AND_TWO_COLUMNS` - Title with two text columns
+- `TITLE_ONLY` - Title bar only
+- `SECTION_HEADER` - Section divider
+- `ONE_COLUMN_TEXT` - Single column text
+- `MAIN_POINT` - Main point highlight
+- `BIG_NUMBER` - Large number display
 
 ## Presentation ID Format
 

@@ -82,7 +82,7 @@
     },
     {
       "name": "google-drive",
-      "description": "Interact with Google Drive - search files, find folders, list contents, and download files. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "description": "Interact with Google Drive - search, upload, download files, create folders, move, copy, rename, and trash. Lightweight integration with standalone OAuth authentication supporting full read/write access.",
       "source": "./",
       "skills": [
         "./skills/google-drive"
@@ -98,7 +98,7 @@
     },
     {
       "name": "google-slides",
-      "description": "Read content from Google Slides presentations - get text, find presentations, and retrieve metadata. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication. Read-only access.",
+      "description": "Read and write Google Slides presentations - get text, create presentations, add slides, replace text, and manage slide content. Lightweight integration with standalone OAuth authentication supporting full read/write access.",
       "source": "./",
       "skills": [
         "./skills/google-slides"

@@ -182,6 +182,97 @@ def get_metadata(presentation_id: str) -> dict:
     return metadata
 
 
+def create_presentation(title: str) -> dict:
+    """Create a new empty presentation."""
+    data = {"title": title}
+    return api_request("POST", f"{SLIDES_API_BASE}/presentations", data=data)
+
+
+def add_slide(presentation_id: str, layout: str = "BLANK", insert_at: Optional[int] = None) -> dict:
+    """
+    Add a new slide to a presentation.
+
+    Args:
+        presentation_id: Presentation ID or URL
+        layout: Predefined layout - BLANK, TITLE, TITLE_AND_BODY, TITLE_AND_TWO_COLUMNS,
+                TITLE_ONLY, SECTION_HEADER, SECTION_TITLE_AND_DESCRIPTION, ONE_COLUMN_TEXT,
+                MAIN_POINT, BIG_NUMBER
+        insert_at: 0-based index to insert slide at (appends if not specified)
+    """
+    pid = extract_presentation_id(presentation_id)
+
+    request = {
+        "createSlide": {
+            "slideLayoutReference": {
+                "predefinedLayout": layout
+            }
+        }
+    }
+
+    if insert_at is not None:
+        request["createSlide"]["insertionIndex"] = insert_at
+
+    return api_request("POST", f"{SLIDES_API_BASE}/presentations/{pid}:batchUpdate",
+                       data={"requests": [request]})
+
+
+def replace_text(presentation_id: str, find_text: str, replace_with: str, match_case: bool = False) -> dict:
+    """
+    Find and replace text across all slides.
+
+    Args:
+        presentation_id: Presentation ID or URL
+        find_text: Text to search for
+        replace_with: Replacement text
+        match_case: Whether the search is case-sensitive
+    """
+    pid = extract_presentation_id(presentation_id)
+
+    request = {
+        "replaceAllText": {
+            "containsText": {
+                "text": find_text,
+                "matchCase": match_case
+            },
+            "replaceText": replace_with
+        }
+    }
+
+    return api_request("POST", f"{SLIDES_API_BASE}/presentations/{pid}:batchUpdate",
+                       data={"requests": [request]})
+
+
+def delete_slide(presentation_id: str, slide_object_id: str) -> dict:
+    """
+    Delete a slide by its object ID.
+
+    Use get-metadata to find slide object IDs.
+    """
+    pid = extract_presentation_id(presentation_id)
+
+    request = {
+        "deleteObject": {
+            "objectId": slide_object_id
+        }
+    }
+
+    return api_request("POST", f"{SLIDES_API_BASE}/presentations/{pid}:batchUpdate",
+                       data={"requests": [request]})
+
+
+def batch_update(presentation_id: str, requests: list) -> dict:
+    """
+    Execute batch update requests for advanced operations.
+
+    Args:
+        presentation_id: Presentation ID or URL
+        requests: List of request objects (see Google Slides API batchUpdate docs)
+    """
+    pid = extract_presentation_id(presentation_id)
+    return api_request("POST", f"{SLIDES_API_BASE}/presentations/{pid}:batchUpdate",
+                       data={"requests": requests})
+
+
 def main():
     parser = argparse.ArgumentParser(description="Google Slides API operations")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -200,6 +291,34 @@ def main():
     get_metadata_parser = subparsers.add_parser("get-metadata", help="Get presentation metadata")
     get_metadata_parser.add_argument("presentation", help="Presentation ID or URL")
 
+    # create
+    create_parser = subparsers.add_parser("create", help="Create a new presentation")
+    create_parser.add_argument("title", help="Presentation title")
+
+    # add-slide
+    add_slide_parser = subparsers.add_parser("add-slide", help="Add a slide to a presentation")
+    add_slide_parser.add_argument("presentation", help="Presentation ID or URL")
+    add_slide_parser.add_argument("--layout", default="BLANK",
+                                  help="Slide layout (BLANK, TITLE, TITLE_AND_BODY, TITLE_ONLY, SECTION_HEADER, etc.)")
+    add_slide_parser.add_argument("--at", type=int, default=None, help="Insert position (0-based index)")
+
+    # replace-text
+    replace_text_parser = subparsers.add_parser("replace-text", help="Find and replace text across all slides")
+    replace_text_parser.add_argument("presentation", help="Presentation ID or URL")
+    replace_text_parser.add_argument("find", help="Text to find")
+    replace_text_parser.add_argument("replace", help="Replacement text")
+    replace_text_parser.add_argument("--match-case", action="store_true", help="Case-sensitive search")
+
+    # delete-slide
+    delete_slide_parser = subparsers.add_parser("delete-slide", help="Delete a slide by object ID")
+    delete_slide_parser.add_argument("presentation", help="Presentation ID or URL")
+    delete_slide_parser.add_argument("slide_id", help="Slide object ID (from get-metadata)")
+
+    # batch-update
+    batch_parser = subparsers.add_parser("batch-update", help="Execute batch update requests")
+    batch_parser.add_argument("presentation", help="Presentation ID or URL")
+    batch_parser.add_argument("requests", help="JSON array of batch update request objects")
+
     args = parser.parse_args()
 
     if args.command == "get-text":
@@ -208,6 +327,17 @@ def main():
         result = find_presentations(args.query, args.limit, args.page_token)
     elif args.command == "get-metadata":
         result = get_metadata(args.presentation)
+    elif args.command == "create":
+        result = create_presentation(args.title)
+    elif args.command == "add-slide":
+        result = add_slide(args.presentation, args.layout, args.at)
+    elif args.command == "replace-text":
+        result = replace_text(args.presentation, args.find, args.replace, args.match_case)
+    elif args.command == "delete-slide":
+        result = delete_slide(args.presentation, args.slide_id)
+    elif args.command == "batch-update":
+        requests_data = json.loads(args.requests)
+        result = batch_update(args.presentation, requests_data)
     else:
         result = {"error": f"Unknown command: {args.command}"}
 
