@@ -1,17 +1,17 @@
 ---
 name: google-sheets
 description: |
-  Read Google Sheets spreadsheets - get content, fetch specific ranges, search for spreadsheets, and view metadata.
-  Use when user asks to: read a spreadsheet, get data from Google Sheets, find a spreadsheet, check sheet contents,
-  export spreadsheet data, or get cell values. Lightweight alternative to full Google Workspace MCP server with
-  standalone OAuth authentication. Read-only access.
+  Read and write Google Sheets spreadsheets - get content, update cells, append rows, fetch specific ranges,
+  search for spreadsheets, and view metadata. Use when user asks to: read a spreadsheet, update cells,
+  add data to Google Sheets, find a spreadsheet, check sheet contents, export spreadsheet data, or get cell values.
+  Lightweight integration with standalone OAuth authentication supporting full read/write access.
 ---
 
 # Google Sheets
 
-Lightweight Google Sheets integration with standalone OAuth authentication. No MCP server required. Read-only access.
+Lightweight Google Sheets integration with standalone OAuth authentication. No MCP server required. Full read/write access.
 
-> **⚠️ Requires Google Workspace account.** Personal Gmail accounts are not supported.
+> **Requires Google Workspace account.** Personal Gmail accounts are not supported.
 
 ## First-Time Setup
 
@@ -30,7 +30,7 @@ Logout when needed:
 python scripts/auth.py logout
 ```
 
-## Commands
+## Read Commands
 
 All operations via `scripts/sheets.py`. Auto-authenticates on first use if not logged in.
 
@@ -54,6 +54,25 @@ python scripts/sheets.py find "sales report" --limit 5
 
 # Get spreadsheet metadata (sheets, dimensions, etc.)
 python scripts/sheets.py get-metadata SPREADSHEET_ID
+```
+
+## Write Commands
+
+```bash
+# Update a range of cells with values (JSON 2D array)
+python scripts/sheets.py update-range SPREADSHEET_ID "Sheet1!A1:B2" '[["Hello","World"],["Foo","Bar"]]'
+
+# Update with RAW input (no formula parsing, treats everything as literal text)
+python scripts/sheets.py update-range SPREADSHEET_ID "Sheet1!A1:B1" '[["=SUM(A1:A5)","text"]]' --raw
+
+# Append rows after the last data row
+python scripts/sheets.py append-rows SPREADSHEET_ID "Sheet1!A:Z" '[["New Row Col A","New Row Col B"]]'
+
+# Clear values from a range (keeps formatting)
+python scripts/sheets.py clear-range SPREADSHEET_ID "Sheet1!A1:B10"
+
+# Batch update (advanced - for formatting, merging, etc.)
+python scripts/sheets.py batch-update SPREADSHEET_ID '[{"updateCells":{"range":{"sheetId":0},"fields":"userEnteredValue"}}]'
 ```
 
 ## Spreadsheet ID
@@ -101,6 +120,11 @@ Structured data format:
 - `Sheet1!A:A` - All of column A on Sheet1
 - `Sheet1!1:1` - All of row 1 on Sheet1
 - `A1:C5` - Range on the first sheet
+
+## Value Input Options
+
+- **USER_ENTERED** (default): Values are parsed as if typed by a user. Numbers, dates, and formulas are interpreted.
+- **RAW** (`--raw` flag): Values are stored exactly as provided. No parsing of formulas or number formatting.
 
 ## Token Management
 

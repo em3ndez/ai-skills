@@ -274,9 +274,9 @@ def main():
     elif args.command == "get-messages":
         result = get_messages(args.space, args.limit, args.page_token)
     elif args.command == "send-message":
-        result = send_message(args.space, args.text, args.attachment)
+        result = send_message(args.space, args.text, getattr(args, 'attachment', None))
     elif args.command == "send-dm":
-        result = send_dm(args.email, args.text, args.attachment)
+        result = send_dm(args.email, args.text, getattr(args, 'attachment', None))
     elif args.command == "find-dm":
         result = find_dm_by_email(args.email)
     elif args.command == "list-threads":

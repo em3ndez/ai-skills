@@ -75,15 +75,7 @@ python scripts/gmail.py send --to "user@example.com" --cc "cc@example.com" --bcc
 
 # Send from an alias (must be configured in Gmail settings)
 python scripts/gmail.py send --to "user@example.com" --subject "Hello" --body "Message" \
-  --from "My Alias <alias@example.com>"
-
-# Send with attachment(s)
-python scripts/gmail.py send --to "user@example.com" --subject "Report" --body "See attached" \
-  --attach ~/Documents/report.pdf
-
-# Send with multiple attachments
-python scripts/gmail.py send --to "user@example.com" --subject "Files" --body "See attached" \
-  --attach ~/Documents/report.pdf --attach ~/Documents/data.csv
+  --from "Mile9 Accounts <accounts@mile9.io>"
 
 # Send HTML email
 python scripts/gmail.py send --to "user@example.com" --subject "HTML Email" \
@@ -96,10 +88,6 @@ python scripts/gmail.py send --to "user@example.com" --subject "HTML Email" \
 # Create a draft
 python scripts/gmail.py create-draft --to "user@example.com" --subject "Draft Subject" \
   --body "Draft content"
-
-# Create a draft with attachment
-python scripts/gmail.py create-draft --to "user@example.com" --subject "Draft with file" \
-  --body "See attached" --attach ~/Documents/report.pdf
 
 # Send an existing draft
 python scripts/gmail.py send-draft DRAFT_ID

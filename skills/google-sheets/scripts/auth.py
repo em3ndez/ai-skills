@@ -30,10 +30,10 @@ REFRESH_ENDPOINT = f"{CLOUD_FUNCTION_URL}/refreshToken"
 KEYCHAIN_SERVICE = "google-sheets-skill-oauth"
 KEYCHAIN_ACCOUNT = "main-account"
 
-# Google Sheets requires these scopes
+# Google Sheets requires these scopes (read/write)
 SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets.readonly",
-    "https://www.googleapis.com/auth/drive.readonly",
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
     "https://www.googleapis.com/auth/userinfo.profile",
 ]
 

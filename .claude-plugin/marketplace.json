@@ -90,7 +90,7 @@
     },
     {
       "name": "google-sheets",
-      "description": "Read Google Sheets spreadsheets - get content, fetch specific ranges, search for spreadsheets, and view metadata. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication. Read-only access.",
+      "description": "Read and write Google Sheets spreadsheets - get content, update cells, append rows, fetch specific ranges, search for spreadsheets, and view metadata. Lightweight integration with standalone OAuth authentication supporting full read/write access.",
       "source": "./",
       "skills": [
         "./skills/google-sheets"
