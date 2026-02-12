@@ -47,6 +47,78 @@
       "skills": [
         "./skills/jules"
       ]
+    },
+    {
+      "name": "gmail",
+      "description": "Interact with Gmail - search emails, read messages, send emails, create drafts, and manage labels. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "source": "./",
+      "skills": [
+        "./skills/gmail"
+      ]
+    },
+    {
+      "name": "google-calendar",
+      "description": "Interact with Google Calendar - list calendars, view events, create/update/delete events, and find free time. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "source": "./",
+      "skills": [
+        "./skills/google-calendar"
+      ]
+    },
+    {
+      "name": "google-chat",
+      "description": "Interact with Google Chat - list spaces, send messages, read conversations, and manage DMs. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "source": "./",
+      "skills": [
+        "./skills/google-chat"
+      ]
+    },
+    {
+      "name": "google-docs",
+      "description": "Interact with Google Docs - create documents, search by title, read content, and edit text. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "source": "./",
+      "skills": [
+        "./skills/google-docs"
+      ]
+    },
+    {
+      "name": "google-drive",
+      "description": "Interact with Google Drive - search files, find folders, list contents, and download files. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication.",
+      "source": "./",
+      "skills": [
+        "./skills/google-drive"
+      ]
+    },
+    {
+      "name": "google-sheets",
+      "description": "Read Google Sheets spreadsheets - get content, fetch specific ranges, search for spreadsheets, and view metadata. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication. Read-only access.",
+      "source": "./",
+      "skills": [
+        "./skills/google-sheets"
+      ]
+    },
+    {
+      "name": "google-slides",
+      "description": "Read content from Google Slides presentations - get text, find presentations, and retrieve metadata. Lightweight alternative to full Google Workspace MCP server with standalone OAuth authentication. Read-only access.",
+      "source": "./",
+      "skills": [
+        "./skills/google-slides"
+      ]
+    },
+    {
+      "name": "notebooklm",
+      "description": "Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports.",
+      "source": "./",
+      "skills": [
+        "./skills/notebooklm"
+      ]
+    },
+    {
+      "name": "manus",
+      "description": "Delegate complex, long-running tasks to Manus AI agent for autonomous execution. Deep web research, market analysis, competitive research, document generation, and multi-step workflows with parallel processing.",
+      "source": "./",
+      "skills": [
+        "./skills/manus"
+      ]
     }
   ]
 }
