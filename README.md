@@ -35,6 +35,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [jules](skills/jules/) | Delegate coding tasks to Google Jules AI agent (async bug fixes, docs, tests, features) |
 | [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
 | [notebooklm](skills/notebooklm/) | Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports |
+| [elevenlabs](skills/elevenlabs/) | Text-to-speech narration and two-host podcast generation from documents (PDF, DOCX, MD, TXT) using ElevenLabs API |
 
 ### Google Workspace Skills
 
@@ -198,6 +199,14 @@ export MANUS_API_KEY=your-api-key
 ```
 Get your API key from [manus.im](https://manus.im) settings. Manus excels at deep research, market analysis, product comparisons, and generating comprehensive reports with visualizations.
 
+### ElevenLabs
+```bash
+pip install -r skills/elevenlabs/requirements.txt  # Only needed for PDF/DOCX
+```
+Create `skills/elevenlabs/config.json` (see `config.example.json`) or set `ELEVENLABS_API_KEY` env var. Requires `ffmpeg` for multi-chunk narration and podcasts.
+
+Get your API key at [elevenlabs.io](https://elevenlabs.io/).
+
 ### NotebookLM
 ```bash
 pip install -r skills/notebooklm/requirements.txt
@@ -260,6 +269,12 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Have Manus analyze AAPL stock with technical indicators"
 - "Delegate market research on EV charging to Manus"
 - "Ask Manus to compare AWS vs GCP vs Azure pricing"
+
+### ElevenLabs
+- "Narrate this PDF as audio"
+- "Create a podcast from this document"
+- "Convert this markdown file to speech"
+- "List available ElevenLabs voices"
 
 ### NotebookLM
 - "Query this NotebookLM URL and summarize key points"
@@ -332,6 +347,7 @@ Skill placement by category:
 - outline: Collaboration & Project Management
 - jules: Development & Automation
 - manus: Data & Analysis / Scientific & Research (deep research, market analysis)
+- elevenlabs: Creative & Media
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
 -->

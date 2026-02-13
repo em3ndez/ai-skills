@@ -119,6 +119,14 @@
       "skills": [
         "./skills/manus"
       ]
+    },
+    {
+      "name": "elevenlabs",
+      "description": "Convert documents and text to audio using ElevenLabs text-to-speech. Single-voice narration for documents (PDF, DOCX, MD, TXT) and two-host conversational podcast generation with automatic script creation.",
+      "source": "./",
+      "skills": [
+        "./skills/elevenlabs"
+      ]
     }
   ]
 }

@@ -1,6 +1,7 @@
 # Credentials - NEVER commit actual connection configs
 connections.json
 **/connections.json
+**/config.json
 
 # Python
 __pycache__/
