@@ -36,6 +36,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
 | [notebooklm](skills/notebooklm/) | Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports |
 | [elevenlabs](skills/elevenlabs/) | Text-to-speech narration and two-host podcast generation from documents (PDF, DOCX, MD, TXT) using ElevenLabs API |
+| [azure-devops](skills/azure-devops/) | Manage Azure DevOps projects, work items, repos, PRs, pipelines, wikis, test plans, security alerts, variable groups, environments/approvals, branch policies, and attachments (99 tools, 13 domains) |
 
 ### Google Workspace Skills
 
@@ -214,6 +215,17 @@ python -m playwright install chromium
 ```
 Use `python skills/notebooklm/scripts/auth_manager.py setup` for one-time login.
 
+### Azure DevOps
+```bash
+pip install keyring
+
+# Option A: OAuth (Recommended)
+python skills/azure-devops/scripts/auth.py login --org MyOrganization
+
+# Option B: PAT
+python skills/azure-devops/scripts/auth.py login --org MyOrganization --pat YOUR_PAT
+```
+
 ### Google Workspace Skills
 Each Google Workspace skill requires the `keyring` library and first-time authentication:
 ```bash
@@ -280,6 +292,13 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Query this NotebookLM URL and summarize key points"
 - "Add this NotebookLM link to library with topics"
 - "Ask follow-up questions against my active notebook"
+
+### Azure DevOps
+- "List my Azure DevOps projects"
+- "Create a bug work item in the Sandbox project"
+- "Show open pull requests in the main repo"
+- "Run the CI pipeline on the develop branch"
+- "List pending deployment approvals"
 
 ### Google Workspace
 - "List my Google Chat spaces" / "Send a message to Project Alpha"
@@ -348,6 +367,7 @@ Skill placement by category:
 - jules: Development & Automation
 - manus: Data & Analysis / Scientific & Research (deep research, market analysis)
 - elevenlabs: Creative & Media
+- azure-devops: Development & Automation
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
 -->
