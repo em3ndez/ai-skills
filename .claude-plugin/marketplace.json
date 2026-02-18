@@ -25,6 +25,14 @@
       ]
     },
     {
+      "name": "azure-devops",
+      "description": "Manage Azure DevOps projects, work items, repos, PRs, pipelines, wikis, test plans, security alerts, variable groups, environments/approvals, branch policies, and attachments. OAuth and PAT authentication with 99 tools across 13 domains via REST API v7.1.",
+      "source": "./",
+      "skills": [
+        "./skills/azure-devops"
+      ]
+    },
+    {
       "name": "deep-research",
       "description": "Perform autonomous multi-step research using Gemini Deep Research Agent. Literature reviews, competitive analysis, market research with citations.",
       "source": "./",
