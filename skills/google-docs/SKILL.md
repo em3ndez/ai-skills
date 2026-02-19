@@ -5,6 +5,10 @@ description: |
   Use when user asks to: create a Google Doc, find a document, read doc content, add text to a doc,
   or replace text in a document. Lightweight alternative to full Google Workspace MCP server with
   standalone OAuth authentication.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Google Docs

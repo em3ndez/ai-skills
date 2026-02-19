@@ -5,6 +5,10 @@ description: |
   Use when user asks to: search email, read email, send email, create email draft, mark as read,
   archive email, star email, or manage Gmail labels. Lightweight alternative to full Google
   Workspace MCP server with standalone OAuth authentication.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Gmail

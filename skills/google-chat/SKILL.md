@@ -5,6 +5,10 @@ description: |
   Use when user asks to: send a message on Google Chat, read chat messages, list chat spaces,
   find a chat room, send a DM, or create a new chat space. Lightweight alternative to full
   Google Workspace MCP server with standalone OAuth authentication.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Google Chat

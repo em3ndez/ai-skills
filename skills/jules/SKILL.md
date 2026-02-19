@@ -1,6 +1,10 @@
 ---
 name: jules
 description: "Delegate coding tasks to Google Jules AI agent for asynchronous execution. Use when user says: 'have Jules fix', 'delegate to Jules', 'send to Jules', 'ask Jules to', 'check Jules sessions', 'pull Jules results', 'jules add tests', 'jules add docs', 'jules review pr'. Handles: bug fixes, documentation, features, tests, refactoring, code reviews. Works with GitHub repos, creates PRs."
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Jules Task Delegation

@@ -5,6 +5,10 @@ description: |
   replace text, and manage slide content. Use when user asks to: read a presentation, create slides, find slides,
   add a slide, replace text in a presentation, or manage presentation content. Lightweight integration with
   standalone OAuth authentication supporting full read/write access.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Google Slides

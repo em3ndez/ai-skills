@@ -6,6 +6,10 @@ description: |
   sprints, create/update work items, list repos, create PRs, run pipelines, search code, manage wiki pages,
   check security alerts, manage variable groups, approve deployments, or configure branch policies.
   Covers 13 domains with 99 tools via REST API.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Azure DevOps

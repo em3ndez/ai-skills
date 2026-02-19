@@ -5,6 +5,10 @@ description: |
   Use when user asks to: check calendar, schedule a meeting, create an event, find available time, list upcoming events,
   delete or update a calendar event, or respond to meeting invitations. Lightweight alternative to full
   Google Workspace MCP server with standalone OAuth authentication.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Google Calendar

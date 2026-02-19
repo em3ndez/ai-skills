@@ -58,111 +58,121 @@ Lightweight alternatives to the full [Google Workspace MCP server](https://githu
 
 ## Installation
 
-### Option 1: Skills CLI (Recommended)
+> **[`npx skills`](https://github.com/nicepkg/skills)** — The package manager for the open [Agent Skills](https://agentskills.io) ecosystem. One command to install skills into any AI coding agent.
 
-Install skills using [`npx skills`](https://github.com/vercel-labs/skills), the package manager for the open agent skills ecosystem:
+### Install Skills
 
 ```bash
-# Browse available skills
+# Browse all 18 available skills
 npx skills add sanjay3290/ai-skills --list
 
-# Install a specific skill
+# Install a single skill (auto-detects your agent)
 npx skills add sanjay3290/ai-skills --skill postgres
+
+# Install multiple skills at once
+npx skills add sanjay3290/ai-skills --skill postgres --skill mysql --skill mssql
 
 # Install all skills
 npx skills add sanjay3290/ai-skills --all
-
-# Install for a specific agent
-npx skills add sanjay3290/ai-skills --skill notebooklm -a claude-code
-
-# Install multiple skills for multiple agents
-npx skills add sanjay3290/ai-skills --skill postgres --skill imagen -a claude-code -a gemini
 ```
 
-### Option 2: Clone entire repository
+### Target Specific Agents
+
+Use `-a` to install into a specific agent's skills directory:
 
 ```bash
-# Clone to your preferred skills directory
+# Install for Claude Code
+npx skills add sanjay3290/ai-skills --skill postgres -a claude-code
+
+# Install for multiple agents at once
+npx skills add sanjay3290/ai-skills --skill postgres -a claude-code -a gemini-cli -a cursor
+
+# Install all skills into all supported agents
+npx skills add sanjay3290/ai-skills --all -a '*'
+```
+
+### Global vs Project Install
+
+By default, skills install to the current project directory. Use `-g` for global (user-level) installation:
+
+```bash
+# Global install — available in all projects
+npx skills add sanjay3290/ai-skills --skill imagen -g
+
+# Project install (default) — scoped to current repo
+npx skills add sanjay3290/ai-skills --skill imagen
+```
+
+### Supported Agents
+
+The skills CLI supports 40+ agents. Here are the most common:
+
+| Agent | `-a` Flag | Project Directory | Global Directory |
+|-------|-----------|-------------------|------------------|
+| Claude Code | `claude-code` | `.claude/skills/` | `~/.claude/skills/` |
+| Gemini CLI | `gemini-cli` | `.gemini/skills/` | `~/.gemini/skills/` |
+| Cursor | `cursor` | `.cursor/skills/` | `~/.cursor/skills/` |
+| OpenAI Codex | `codex` | `.codex/skills/` | `~/.codex/skills/` |
+| Goose | `goose` | `.goose/skills/` | `~/.config/goose/skills/` |
+| GitHub Copilot | `github-copilot` | `.github/skills/` | `~/.github/skills/` |
+| Google Antigravity | `antigravity` | `.agent/skills/` | `~/.gemini/antigravity/skills/` |
+| All agents | `'*'` | auto-detected | auto-detected |
+
+### Managing Skills
+
+```bash
+# List installed skills
+npx skills list
+
+# Check for updates
+npx skills check
+
+# Update all skills
+npx skills update
+
+# Remove a specific skill
+npx skills remove postgres
+
+# Remove all skills from a specific agent
+npx skills remove --skill '*' -a cursor
+```
+
+### Discover More Skills
+
+```bash
+# Search the skills.sh directory
+npx skills find postgres
+
+# Browse all community skills
+npx skills find
+```
+
+Visit [skills.sh](https://skills.sh) for the full directory of community skills.
+
+<details>
+<summary><b>Manual Installation (Alternative)</b></summary>
+
+#### Clone entire repository
+
+```bash
 git clone https://github.com/sanjay3290/ai-skills.git ~/.claude/skills/ai-skills
-
-# Or for other clients:
-# git clone https://github.com/sanjay3290/ai-skills.git ~/.gemini/skills/ai-skills
-# git clone https://github.com/sanjay3290/ai-skills.git ~/.gemini/antigravity/skills/ai-skills
-# git clone https://github.com/sanjay3290/ai-skills.git ~/.cursor/skills/ai-skills
-# git clone https://github.com/sanjay3290/ai-skills.git ~/.codex/skills/ai-skills
-# git clone https://github.com/sanjay3290/ai-skills.git ~/.config/goose/skills/ai-skills
 ```
 
-### Option 3: Copy individual skills
+#### Copy individual skills
 
 ```bash
-# Example: Install just the postgres skill
 cp -r skills/postgres ~/.claude/skills/
 ```
 
-### Option 4: Symlink for development
+#### Symlink for development
 
 ```bash
-# Symlink skills for easy updates
 ln -s /path/to/ai-skills/skills/postgres ~/.claude/skills/postgres
-ln -s /path/to/ai-skills/skills/imagen ~/.claude/skills/imagen
 ```
 
-### Client-Specific Installation
+Replace `~/.claude/skills/` with the appropriate directory for your agent (see table above).
 
-#### Claude Code
-```bash
-# Global installation
-cp -r skills/* ~/.claude/skills/
-
-# Or project-level
-cp -r skills/* .claude/skills/
-```
-
-#### Gemini CLI
-```bash
-# Global installation
-cp -r skills/* ~/.gemini/skills/
-
-# Or workspace-level
-cp -r skills/* .gemini/skills/
-```
-
-#### Google Antigravity
-```bash
-# Global installation
-cp -r skills/* ~/.gemini/antigravity/skills/
-
-# Or workspace-level
-cp -r skills/* .agent/skills/
-```
-
-#### Cursor
-```bash
-# Global installation
-cp -r skills/* ~/.cursor/skills/
-
-# Or project-level
-cp -r skills/* .cursor/skills/
-```
-
-#### OpenAI Codex CLI
-```bash
-# Global installation
-cp -r skills/* ~/.codex/skills/
-
-# Or repository-level
-cp -r skills/* .codex/skills/
-```
-
-#### Goose
-```bash
-# Global installation
-cp -r skills/* ~/.config/goose/skills/
-
-# Or project-level
-cp -r skills/* .goose/skills/
-```
+</details>
 
 ## Skill Setup
 

@@ -4,6 +4,10 @@ description: |
   Convert documents and text to audio using ElevenLabs text-to-speech.
   Use this skill when the user wants to create a podcast, narrate a document,
   read aloud text, generate audio from a file, or convert text to speech.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # ElevenLabs - Text-to-Speech & Podcast Skill

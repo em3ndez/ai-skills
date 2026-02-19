@@ -6,6 +6,10 @@ description: |
   find a file/folder, list Drive contents, download or upload files, create folders, move files,
   or organize Drive content. Lightweight integration with standalone OAuth authentication supporting
   full read/write access.
+license: Apache-2.0
+metadata:
+  author: sanjay3290
+  version: "1.0"
 ---
 
 # Google Drive
