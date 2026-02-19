@@ -29,6 +29,8 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | Skill | Description |
 |-------|-------------|
 | [postgres](skills/postgres/) | Read-only PostgreSQL queries with defense-in-depth security |
+| [mysql](skills/mysql/) | Read-only MySQL queries with session-level write protection |
+| [mssql](skills/mssql/) | Read-only Microsoft SQL Server queries with query validation security |
 | [imagen](skills/imagen/) | AI image generation using Google Gemini (cross-platform) |
 | [deep-research](skills/deep-research/) | Autonomous multi-step research using Gemini Deep Research Agent |
 | [outline](skills/outline/) | Search, read, and manage Outline wiki documents |
@@ -166,8 +168,15 @@ cp -r skills/* .goose/skills/
 
 Each skill may require additional configuration:
 
-### Postgres
-Create `connections.json` in the skill directory with your database credentials. See [postgres/README.md](skills/postgres/README.md).
+### Postgres / MySQL / MSSQL
+Create `connections.json` in the skill directory with your database credentials. See [postgres/README.md](skills/postgres/README.md), [mysql/README.md](skills/mysql/README.md), or [mssql/README.md](skills/mssql/README.md).
+
+```bash
+# Install drivers for whichever databases you use
+pip install psycopg2-binary     # PostgreSQL
+pip install mysql-connector-python  # MySQL
+pip install pymssql              # MSSQL
+```
 
 ### Imagen & Deep Research
 ```bash
@@ -250,10 +259,12 @@ Tokens stored securely via system keyring:
 
 Once installed, skills activate automatically based on your requests. Just ask naturally:
 
-### Postgres
+### Postgres / MySQL / MSSQL
 - "Query my production database for active users"
 - "Show me the schema of the orders table"
 - "How many signups last week?"
+- "List tables in the MySQL staging database"
+- "Show me the top 10 orders from SQL Server"
 
 ### Imagen
 - "Generate an image of a sunset over mountains"
@@ -360,7 +371,7 @@ Apache-2.0
 | github.com/ComposioHQ/awesome-claude-skills | sanjay3290/awesome-claude-skills | Composio-maintained, has connect-apps plugin |
 
 Skill placement by category:
-- postgres: Data & Analysis
+- postgres/mysql/mssql: Data & Analysis
 - imagen: Creative & Media
 - deep-research: Data & Analysis / Scientific & Research
 - outline: Collaboration & Project Management
