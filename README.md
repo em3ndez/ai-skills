@@ -38,6 +38,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [manus](skills/manus/) | Delegate complex tasks to Manus AI agent (deep research, market analysis, reports) |
 | [notebooklm](skills/notebooklm/) | Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports |
 | [elevenlabs](skills/elevenlabs/) | Text-to-speech narration and two-host podcast generation from documents (PDF, DOCX, MD, TXT) using ElevenLabs API |
+| [google-tts](skills/google-tts/) | Text-to-speech narration and podcast generation using Google Cloud TTS (Neural2, WaveNet, Studio voices, 40+ languages) |
 | [azure-devops](skills/azure-devops/) | Manage Azure DevOps projects, work items, repos, PRs, pipelines, wikis, test plans, security alerts, variable groups, environments/approvals, branch policies, and attachments (99 tools, 13 domains) |
 
 ### Google Workspace Skills
@@ -63,7 +64,7 @@ Lightweight alternatives to the full [Google Workspace MCP server](https://githu
 ### Install Skills
 
 ```bash
-# Browse all 18 available skills
+# Browse all 19 available skills
 npx skills add sanjay3290/ai-skills --list
 
 # Install a single skill (auto-detects your agent)
@@ -227,6 +228,13 @@ Create `skills/elevenlabs/config.json` (see `config.example.json`) or set `ELEVE
 
 Get your API key at [elevenlabs.io](https://elevenlabs.io/).
 
+### Google TTS
+```bash
+export GOOGLE_TTS_API_KEY=your-api-key
+pip install PyPDF2 python-docx  # Only needed for PDF/DOCX files
+```
+Enable the [Cloud Text-to-Speech API](https://console.cloud.google.com/apis/library/texttospeech.googleapis.com) and create an API key in your GCP project. Requires `ffmpeg` for multi-chunk documents and podcasts.
+
 ### NotebookLM
 ```bash
 pip install -r skills/notebooklm/requirements.txt
@@ -309,6 +317,12 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Convert this markdown file to speech"
 - "List available ElevenLabs voices"
 
+### Google TTS
+- "Narrate this document using Google TTS"
+- "Create a podcast from this analysis"
+- "Convert this markdown to audio"
+- "List available Google TTS voices"
+
 ### NotebookLM
 - "Query this NotebookLM URL and summarize key points"
 - "Add this NotebookLM link to library with topics"
@@ -388,6 +402,7 @@ Skill placement by category:
 - jules: Development & Automation
 - manus: Data & Analysis / Scientific & Research (deep research, market analysis)
 - elevenlabs: Creative & Media
+- google-tts: Creative & Media
 - azure-devops: Development & Automation
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
