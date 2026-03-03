@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "ai-skills",
-      "description": "Collection of agent skills: PostgreSQL, Imagen, Azure DevOps, Google Workspace (Gmail, Calendar, Chat, Docs, Drive, Sheets, Slides), NotebookLM, Jules, Manus, Deep Research, Outline, ElevenLabs, MySQL, MSSQL.",
+      "description": "Collection of agent skills: PostgreSQL, MySQL, MSSQL, Imagen, Azure DevOps, Atlassian (Jira + Confluence), Google Workspace (Gmail, Calendar, Chat, Docs, Drive, Sheets, Slides), NotebookLM, Jules, Manus, Deep Research, Outline, ElevenLabs, Google TTS.",
       "source": "./",
       "skills": [
         "./skills/postgres",
@@ -29,8 +29,10 @@
         "./skills/notebooklm",
         "./skills/manus",
         "./skills/elevenlabs",
+        "./skills/google-tts",
         "./skills/mysql",
-        "./skills/mssql"
+        "./skills/mssql",
+        "./skills/atlassian"
       ]
     }
   ]

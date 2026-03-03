@@ -1,4 +1,6 @@
 # Credentials - NEVER commit actual connection configs
+.env
+**/.env
 connections.json
 **/connections.json
 **/config.json

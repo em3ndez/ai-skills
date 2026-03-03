@@ -39,6 +39,7 @@ A collection of portable skills for AI coding assistants. Works with all major A
 | [notebooklm](skills/notebooklm/) | Query and manage Google NotebookLM notebooks with persistent profile auth, source sync, batch/multi queries, and structured exports |
 | [elevenlabs](skills/elevenlabs/) | Text-to-speech narration and two-host podcast generation from documents (PDF, DOCX, MD, TXT) using ElevenLabs API |
 | [google-tts](skills/google-tts/) | Text-to-speech narration and podcast generation using Google Cloud TTS (Neural2, WaveNet, Studio voices, 40+ languages) |
+| [atlassian](skills/atlassian/) | Manage Jira issues and Confluence wiki pages in Atlassian Cloud (OAuth 2.1 via MCP server or API token fallback) |
 | [azure-devops](skills/azure-devops/) | Manage Azure DevOps projects, work items, repos, PRs, pipelines, wikis, test plans, security alerts, variable groups, environments/approvals, branch policies, and attachments (99 tools, 13 domains) |
 
 ### Google Workspace Skills
@@ -64,7 +65,7 @@ Lightweight alternatives to the full [Google Workspace MCP server](https://githu
 ### Install Skills
 
 ```bash
-# Browse all 19 available skills
+# Browse all 20 available skills
 npx skills add sanjay3290/ai-skills --list
 
 # Install a single skill (auto-detects your agent)
@@ -242,6 +243,17 @@ python -m playwright install chromium
 ```
 Use `python skills/notebooklm/scripts/auth_manager.py setup` for one-time login.
 
+### Atlassian (Jira + Confluence)
+```bash
+pip install -r skills/atlassian/requirements.txt
+
+# Option A: OAuth via MCP Server (Recommended)
+python skills/atlassian/scripts/auth.py login --oauth
+
+# Option B: API Token
+python skills/atlassian/scripts/auth.py login
+```
+
 ### Azure DevOps
 ```bash
 pip install keyring
@@ -328,6 +340,13 @@ Once installed, skills activate automatically based on your requests. Just ask n
 - "Add this NotebookLM link to library with topics"
 - "Ask follow-up questions against my active notebook"
 
+### Atlassian (Jira + Confluence)
+- "Search Jira for open bugs in the DEV project"
+- "Create a Jira task to fix the login bug"
+- "Transition JDP-255 to Done"
+- "Search Confluence for the deployment guide"
+- "Read the SonarQube proposal page"
+
 ### Azure DevOps
 - "List my Azure DevOps projects"
 - "Create a bug work item in the Sandbox project"
@@ -403,6 +422,7 @@ Skill placement by category:
 - manus: Data & Analysis / Scientific & Research (deep research, market analysis)
 - elevenlabs: Creative & Media
 - google-tts: Creative & Media
+- atlassian: Collaboration & Project Management (Jira + Confluence)
 - azure-devops: Development & Automation
 - google-*: Collaboration & Project Management (all Google Workspace skills)
 - gmail: Collaboration & Project Management
