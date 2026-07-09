@@ -63,12 +63,25 @@ Lightweight alternatives to the full [Google Workspace MCP server](https://githu
 
 ## Installation
 
+### Claude Code — Plugin Marketplace
+
+The fastest path for Claude Code users, no extra tooling required:
+
+```
+/plugin marketplace add sanjay3290/ai-skills
+/plugin install ai-skills@ai-skills
+```
+
+All 24 skills install as a single plugin; update later with `/plugin marketplace update ai-skills`.
+
+### Any Agent — `skills` CLI
+
 > **[`npx skills`](https://github.com/vercel-labs/skills)** — The package manager for the open [Agent Skills](https://agentskills.io) ecosystem. One command to install skills into any AI coding agent.
 
 ### Install Skills
 
 ```bash
-# Browse all 22 available skills
+# Browse all 24 available skills
 npx skills add sanjay3290/ai-skills --list
 
 # Install a single skill (auto-detects your agent)
